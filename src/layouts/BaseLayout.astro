@@ -29,29 +29,18 @@ const { title, description = "The Telegram Client for Deep Focus" } = Astro.prop
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		
 		<link 
-			rel="preload" 
-			as="style" 
+			rel="stylesheet" 
 			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
 		>
-		<link 
-			rel="stylesheet" 
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" 
-			media="print" 
-			onload="this.media='all'"
-		>
-		<noscript>
-			<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap">
-		</noscript>
-
+		
 		<script is:inline>
-			// High-priority script to avoid flash of untranslated content and reflows
+			// Optimized script to avoid forced reflows and redundant work
 			(function() {
 				const savedLang = localStorage.getItem('lang');
 				const browserLang = navigator.language.split('-')[0];
 				const lang = savedLang || (browserLang === 'ru' ? 'ru' : 'en');
 				document.documentElement.setAttribute('lang', lang);
 				
-				// OS detection - purely setting attribute for CSS to handle
 				const ua = navigator.userAgent.toLowerCase();
 				let os = 'web';
 				if (/android/.test(ua)) os = 'android';
@@ -62,36 +51,52 @@ const { title, description = "The Telegram Client for Deep Focus" } = Astro.prop
 			})();
 
 			function updateContent(lang) {
+				if (!window.translations || !window.translations[lang]) return;
+				
+				const t = window.translations[lang];
 				const elements = document.querySelectorAll('[data-t]');
-				if (window.translations && window.translations[lang]) {
-					const t = window.translations[lang];
+				
+				// Batch DOM updates in a single animation frame to prevent multiple reflows
+				requestAnimationFrame(() => {
 					elements.forEach(el => {
 						const key = el.getAttribute('data-t');
 						if (t[key]) {
+							const value = t[key];
 							if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-								el.placeholder = t[key];
+								if (el.placeholder !== value) el.placeholder = value;
 							} else {
-								el.textContent = t[key];
+								// use textContent for better performance and to avoid reflow
+								if (el.textContent !== value) el.textContent = value;
 							}
 						}
 					});
-				}
-				
-				document.querySelectorAll('.langBtn').forEach(btn => {
-					btn.setAttribute('data-active', btn.getAttribute('data-lang') === lang);
+					
+					document.querySelectorAll('.langBtn').forEach(btn => {
+						const isActive = btn.getAttribute('data-lang') === lang;
+						btn.setAttribute('data-active', isActive);
+					});
 				});
 
 				localStorage.setItem('lang', lang);
 			}
 
 			window.setLanguage = (lang) => {
+				if (document.documentElement.getAttribute('lang') === lang) return;
 				document.documentElement.setAttribute('lang', lang);
 				updateContent(lang);
 			};
 
 			document.addEventListener('DOMContentLoaded', () => {
 				const lang = document.documentElement.getAttribute('lang');
-				if (lang) updateContent(lang);
+				// Only run translation if not in English (which is the static default)
+				if (lang && lang !== 'en') {
+					updateContent(lang);
+				} else {
+					// Even in English, we need to set active state for buttons
+					document.querySelectorAll('.langBtn').forEach(btn => {
+						btn.setAttribute('data-active', btn.getAttribute('data-lang') === 'en');
+					});
+				}
 			});
 		</script>
 	</head>
