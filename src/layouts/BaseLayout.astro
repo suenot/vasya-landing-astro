@@ -56,26 +56,24 @@ const { title, description = "The Telegram Client for Deep Focus" } = Astro.prop
 				const t = window.translations[lang];
 				const elements = document.querySelectorAll('[data-t]');
 				
-				// Batch DOM updates in a single animation frame to prevent multiple reflows
-				requestAnimationFrame(() => {
-					elements.forEach(el => {
-						const key = el.getAttribute('data-t');
-						if (t[key]) {
-							const value = t[key];
-							if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-								if (el.placeholder !== value) el.placeholder = value;
-							} else {
-								// use textContent for better performance and to avoid reflow
-								if (el.textContent !== value) el.textContent = value;
-							}
+				for (let i = 0; i < elements.length; i++) {
+					const el = elements[i];
+					const key = el.getAttribute('data-t');
+					const val = t[key];
+					if (val) {
+						if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+							el.placeholder = val;
+						} else {
+							el.textContent = val;
 						}
-					});
-					
-					document.querySelectorAll('.langBtn').forEach(btn => {
-						const isActive = btn.getAttribute('data-lang') === lang;
-						btn.setAttribute('data-active', isActive);
-					});
-				});
+					}
+				}
+				
+				const btns = document.querySelectorAll('.langBtn');
+				for (let i = 0; i < btns.length; i++) {
+					const btn = btns[i];
+					btn.setAttribute('data-active', btn.getAttribute('data-lang') === lang);
+				}
 
 				localStorage.setItem('lang', lang);
 			}
