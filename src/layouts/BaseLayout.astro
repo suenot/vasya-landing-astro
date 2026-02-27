@@ -42,67 +42,61 @@ const { title, description = "The Telegram Client for Deep Focus" } = Astro.prop
 	</body>
 </html>
 
-<script is:inline>
-	// Simple language switcher
-	function initLang() {
-		const savedLang = localStorage.getItem('lang');
-		const browserLang = navigator.language.split('-')[0];
-		const lang = savedLang || (browserLang === 'ru' ? 'ru' : 'en');
-		
-		document.documentElement.setAttribute('lang', lang);
-		updateContent(lang);
-	}
+	<script is:inline>
+		// High-priority script to avoid flash of untranslated content and reflows
+		(function() {
+			const savedLang = localStorage.getItem('lang');
+			const browserLang = navigator.language.split('-')[0];
+			const lang = savedLang || (browserLang === 'ru' ? 'ru' : 'en');
+			document.documentElement.setAttribute('lang', lang);
+			
+			// OS detection
+			const ua = navigator.userAgent.toLowerCase();
+			let os = null;
+			if (/android/.test(ua)) os = 'android';
+			else if (/mac/.test(ua)) os = 'mac';
+			else if (/win/.test(ua)) os = 'windows';
+			else if (/linux/.test(ua)) os = 'linux';
+			if (os) document.documentElement.setAttribute('data-os', os);
+		})();
 
-	function updateContent(lang) {
-		const elements = document.querySelectorAll('[data-t]');
-		// We'll pass translations to the client side
-		if (window.translations) {
-			elements.forEach(el => {
-				const key = el.getAttribute('data-t');
-				if (window.translations[lang][key]) {
-					if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-						el.placeholder = window.translations[lang][key];
-					} else {
-						el.innerText = window.translations[lang][key];
+		function updateContent(lang) {
+			const elements = document.querySelectorAll('[data-t]');
+			if (window.translations && window.translations[lang]) {
+				const t = window.translations[lang];
+				elements.forEach(el => {
+					const key = el.getAttribute('data-t');
+					if (t[key]) {
+						if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+							el.placeholder = t[key];
+						} else {
+							el.textContent = t[key];
+						}
 					}
-				}
-			});
-		}
-		
-		// Update active state of buttons
-		document.querySelectorAll('.langBtn').forEach(btn => {
-			btn.setAttribute('data-active', btn.getAttribute('data-lang') === lang);
-		});
-
-		localStorage.setItem('lang', lang);
-	}
-
-	window.setLanguage = (lang) => {
-		document.documentElement.setAttribute('lang', lang);
-		updateContent(lang);
-	};
-
-	// OS detection
-	function detectOS() {
-		const ua = navigator.userAgent.toLowerCase();
-		let os = null;
-		if (/android/.test(ua)) os = 'android';
-		else if (/mac/.test(ua)) os = 'mac';
-		else if (/win/.test(ua)) os = 'windows';
-		else if (/linux/.test(ua)) os = 'linux';
-		
-		if (os) {
-			document.documentElement.setAttribute('data-os', os);
-			// Show recommended badge or reorder if needed
-			const card = document.querySelector(`[data-platform="${os}"]`);
-			if (card) {
-				card.classList.add('recommended');
+				});
 			}
-		}
-	}
+			
+			document.querySelectorAll('.langBtn').forEach(btn => {
+				btn.setAttribute('data-active', btn.getAttribute('data-lang') === lang);
+			});
 
-	document.addEventListener('DOMContentLoaded', () => {
-		initLang();
-		detectOS();
-	});
-</script>
+			localStorage.setItem('lang', lang);
+		}
+
+		window.setLanguage = (lang) => {
+			document.documentElement.setAttribute('lang', lang);
+			updateContent(lang);
+		};
+
+		document.addEventListener('DOMContentLoaded', () => {
+			const lang = document.documentElement.getAttribute('lang');
+			const os = document.documentElement.getAttribute('data-os');
+			
+			if (lang) updateContent(lang);
+			
+			if (os) {
+				const card = document.querySelector(`[data-platform="${os}"]`);
+				if (card) card.classList.add('recommended');
+			}
+		});
+	</script>
