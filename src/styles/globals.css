@@ -11,11 +11,11 @@
     --sidebar-active-text: #ffffff;
 
     --text-primary: #ffffff;
-    --text-secondary: #7f91a4;
-    --text-tertiary: #607990;
+    --text-secondary: #b0c4de;
+    --text-tertiary: #92a8c1;
 
-    --accent-color: #5288c1;
-    --accent-hover: #60a0e0;
+    --accent-color: #3390ec;
+    --accent-hover: #4ba3ff;
 
     --border-color: #0f171e;
 
@@ -85,7 +85,8 @@ h4 {
 .btn-primary {
     display: inline-block;
     padding: 0.8rem 1.5rem;
-    background-color: var(--accent-color);
+    background-color: #1c66a8;
+    /* Darker blue for WCAG AA contrast on white text */
     color: white;
     border-radius: 8px;
     font-weight: 600;
@@ -93,7 +94,7 @@ h4 {
 }
 
 .btn-primary:hover {
-    background-color: var(--accent-hover);
+    background-color: #2481cc;
     transform: translateY(-2px);
     color: white;
 }

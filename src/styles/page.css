@@ -27,9 +27,10 @@
   font-size: 0.65rem;
   font-weight: 700;
   font-family: 'Outfit', sans-serif;
-  color: var(--accent-color);
-  background: rgba(51, 144, 236, 0.12);
-  border: 1px solid rgba(51, 144, 236, 0.25);
+  color: white;
+  background: #2b5278;
+  /* High contrast background */
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 2px 8px;
   border-radius: 20px;
   letter-spacing: 0.04em;
@@ -578,7 +579,8 @@
 }
 
 .messagePlaceholder {
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
+  /* Better contrast than tertiary */
   font-size: 14px;
 }
 
@@ -1026,15 +1028,16 @@
 }
 
 .footerReforms {
-  margin-top: 2rem;
+  margin-top: 3rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--border-color);
-  font-size: 13px;
-  color: var(--text-tertiary);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  /* High contrast */
+  font-size: 0.9rem;
 }
 
 .footerReforms a {
-  color: var(--accent-color);
+  color: white;
   font-weight: 600;
   transition: color 0.2s;
 }
