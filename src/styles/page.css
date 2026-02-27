@@ -257,6 +257,8 @@
   color: var(--text-secondary);
   background: transparent;
   border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 /* Chat Filters */
@@ -576,6 +578,17 @@
   border-radius: 8px;
   padding: 10px 12px;
   height: 40px;
+}
+
+.inputAction {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .messagePlaceholder {
