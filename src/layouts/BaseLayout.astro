@@ -19,6 +19,12 @@ const { title, description = "The Telegram Client for Deep Focus" } = Astro.prop
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		
+		<!-- Critical styles to prevent white flash -->
+		<style is:inline>
+			:root { --bg-primary: #0f171e; }
+			html, body { background-color: #0f171e; margin: 0; }
+		</style>
+
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		
@@ -36,67 +42,61 @@ const { title, description = "The Telegram Client for Deep Focus" } = Astro.prop
 		<noscript>
 			<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap">
 		</noscript>
+
+		<script is:inline>
+			// High-priority script to avoid flash of untranslated content and reflows
+			(function() {
+				const savedLang = localStorage.getItem('lang');
+				const browserLang = navigator.language.split('-')[0];
+				const lang = savedLang || (browserLang === 'ru' ? 'ru' : 'en');
+				document.documentElement.setAttribute('lang', lang);
+				
+				// OS detection - purely setting attribute for CSS to handle
+				const ua = navigator.userAgent.toLowerCase();
+				let os = 'web';
+				if (/android/.test(ua)) os = 'android';
+				else if (/mac/.test(ua)) os = 'mac';
+				else if (/win/.test(ua)) os = 'windows';
+				else if (/linux/.test(ua)) os = 'linux';
+				document.documentElement.setAttribute('data-os', os);
+			})();
+
+			function updateContent(lang) {
+				const elements = document.querySelectorAll('[data-t]');
+				if (window.translations && window.translations[lang]) {
+					const t = window.translations[lang];
+					elements.forEach(el => {
+						const key = el.getAttribute('data-t');
+						if (t[key]) {
+							if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+								el.placeholder = t[key];
+							} else {
+								el.textContent = t[key];
+							}
+						}
+					});
+				}
+				
+				document.querySelectorAll('.langBtn').forEach(btn => {
+					btn.setAttribute('data-active', btn.getAttribute('data-lang') === lang);
+				});
+
+				localStorage.setItem('lang', lang);
+			}
+
+			window.setLanguage = (lang) => {
+				document.documentElement.setAttribute('lang', lang);
+				updateContent(lang);
+			};
+
+			document.addEventListener('DOMContentLoaded', () => {
+				const lang = document.documentElement.getAttribute('lang');
+				if (lang) updateContent(lang);
+			});
+		</script>
 	</head>
 	<body>
 		<slot />
 	</body>
 </html>
 
-	<script is:inline>
-		// High-priority script to avoid flash of untranslated content and reflows
-		(function() {
-			const savedLang = localStorage.getItem('lang');
-			const browserLang = navigator.language.split('-')[0];
-			const lang = savedLang || (browserLang === 'ru' ? 'ru' : 'en');
-			document.documentElement.setAttribute('lang', lang);
-			
-			// OS detection
-			const ua = navigator.userAgent.toLowerCase();
-			let os = null;
-			if (/android/.test(ua)) os = 'android';
-			else if (/mac/.test(ua)) os = 'mac';
-			else if (/win/.test(ua)) os = 'windows';
-			else if (/linux/.test(ua)) os = 'linux';
-			if (os) document.documentElement.setAttribute('data-os', os);
-		})();
-
-		function updateContent(lang) {
-			const elements = document.querySelectorAll('[data-t]');
-			if (window.translations && window.translations[lang]) {
-				const t = window.translations[lang];
-				elements.forEach(el => {
-					const key = el.getAttribute('data-t');
-					if (t[key]) {
-						if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-							el.placeholder = t[key];
-						} else {
-							el.textContent = t[key];
-						}
-					}
-				});
-			}
-			
-			document.querySelectorAll('.langBtn').forEach(btn => {
-				btn.setAttribute('data-active', btn.getAttribute('data-lang') === lang);
-			});
-
-			localStorage.setItem('lang', lang);
-		}
-
-		window.setLanguage = (lang) => {
-			document.documentElement.setAttribute('lang', lang);
-			updateContent(lang);
-		};
-
-		document.addEventListener('DOMContentLoaded', () => {
-			const lang = document.documentElement.getAttribute('lang');
-			const os = document.documentElement.getAttribute('data-os');
-			
-			if (lang) updateContent(lang);
-			
-			if (os) {
-				const card = document.querySelector(`[data-platform="${os}"]`);
-				if (card) card.classList.add('recommended');
-			}
-		});
-	</script>

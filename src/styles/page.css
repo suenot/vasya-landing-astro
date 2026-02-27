@@ -877,13 +877,19 @@
   opacity: 1;
 }
 
-.downloadCardHighlighted {
+[data-os="mac"] [data-platform="mac"],
+[data-os="windows"] [data-platform="windows"],
+[data-os="linux"] [data-platform="linux"],
+[data-os="android"] [data-platform="android"] {
   border-color: rgba(51, 144, 236, 0.5);
   background: rgba(51, 144, 236, 0.05);
   box-shadow: 0 0 40px rgba(51, 144, 236, 0.1);
 }
 
-.downloadCardHighlighted::before {
+[data-os="mac"] [data-platform="mac"]::before,
+[data-os="windows"] [data-platform="windows"]::before,
+[data-os="linux"] [data-platform="linux"]::before,
+[data-os="android"] [data-platform="android"]::before {
   content: 'RECOMMENDED';
   position: absolute;
   top: 0;
