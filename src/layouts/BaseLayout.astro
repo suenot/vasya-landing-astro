@@ -1,0 +1,89 @@
+---
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "The Telegram Client for Deep Focus" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="stylesheet" href="/src/styles/globals.css" />
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+<script is:inline>
+	// Simple language switcher
+	function initLang() {
+		const savedLang = localStorage.getItem('lang');
+		const browserLang = navigator.language.split('-')[0];
+		const lang = savedLang || (browserLang === 'ru' ? 'ru' : 'en');
+		
+		document.documentElement.setAttribute('lang', lang);
+		updateContent(lang);
+	}
+
+	function updateContent(lang) {
+		const elements = document.querySelectorAll('[data-t]');
+		// We'll pass translations to the client side
+		if (window.translations) {
+			elements.forEach(el => {
+				const key = el.getAttribute('data-t');
+				if (window.translations[lang][key]) {
+					if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+						el.placeholder = window.translations[lang][key];
+					} else {
+						el.innerText = window.translations[lang][key];
+					}
+				}
+			});
+		}
+		
+		// Update active state of buttons
+		document.querySelectorAll('.langBtn').forEach(btn => {
+			btn.setAttribute('data-active', btn.getAttribute('data-lang') === lang);
+		});
+
+		localStorage.setItem('lang', lang);
+	}
+
+	window.setLanguage = (lang) => {
+		document.documentElement.setAttribute('lang', lang);
+		updateContent(lang);
+	};
+
+	// OS detection
+	function detectOS() {
+		const ua = navigator.userAgent.toLowerCase();
+		let os = null;
+		if (/android/.test(ua)) os = 'android';
+		else if (/mac/.test(ua)) os = 'mac';
+		else if (/win/.test(ua)) os = 'windows';
+		else if (/linux/.test(ua)) os = 'linux';
+		
+		if (os) {
+			document.documentElement.setAttribute('data-os', os);
+			// Show recommended badge or reorder if needed
+			const card = document.querySelector(`[data-platform="${os}"]`);
+			if (card) {
+				card.classList.add('recommended');
+			}
+		}
+	}
+
+	document.addEventListener('DOMContentLoaded', () => {
+		initLang();
+		detectOS();
+	});
+</script>
