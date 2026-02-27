@@ -277,7 +277,7 @@ const features = [
               <div class={`featureCard ${f.comingSoon ? 'featureFuture' : ''}`}>
                 {f.comingSoon && <div class="badge" data-t="comingSoon">{t.comingSoon}</div>}
                 <div class="featureImage">
-                  <Image src={f.image} alt={t[f.titleKey as keyof typeof t]} />
+                  <Image src={f.image} alt={t[f.titleKey as keyof typeof t]} width={400} />
                 </div>
                 <h3 data-t={f.titleKey}>{t[f.titleKey as keyof typeof t]}</h3>
                 <p data-t={f.descKey}>{t[f.descKey as keyof typeof t]}</p>
@@ -305,7 +305,7 @@ const features = [
                   <div class="comingSoonBadge" data-t="comingSoon">{t.comingSoon}</div>
                 )}
                 <div class="downloadCardImage">
-                  <Image src={dl.image} alt={t[dl.labelKey as keyof typeof t]} />
+                  <Image src={dl.image} alt={t[dl.labelKey as keyof typeof t]} width={350} />
                 </div>
                 <h3 class="downloadCardTitle" data-t={dl.labelKey}>{t[dl.labelKey as keyof typeof t]}</h3>
                 {!dl.comingSoon && dl.variants && (
