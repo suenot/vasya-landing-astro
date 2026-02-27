@@ -91,7 +91,7 @@ const features = [
   <div class="page">
     <header class="header glass">
       <div style="display: flex; align-items: center; gap: 10px;">
-        <Image src={logoSvg} alt="Vasyapp Logo" width={32} height={32} />
+        <Image src={logoSvg} alt="Vasyapp Logo" width={32} height={32} loading="eager" fetchpriority="high" />
         <span class="logoTitle" data-t="appName">{t.appName}</span>
         <span class="versionBadge">{APP_VERSION}</span>
       </div>
