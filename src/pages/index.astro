@@ -1,7 +1,24 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import translations from '../data/translations.json';
+import { Image } from 'astro:assets';
 import '../styles/page.css';
+
+// Import images
+import featureVoiceAi from '../assets/feature_voice_ai.png';
+import featureFocus from '../assets/feature_focus_v2.png';
+import featureMulti from '../assets/feature_multi_account.png';
+import featurePrivacy from '../assets/feature_privacy_first.png';
+import featureNative from '../assets/feature_native_speed.png';
+import featureSummaries from '../assets/feature_summaries.png';
+
+import downloadMac from '../assets/download_mac.png';
+import downloadWindows from '../assets/download_windows.png';
+import downloadLinux from '../assets/download_linux.png';
+import downloadAndroid from '../assets/download_android.png';
+import downloadIos from '../assets/download_ios.png';
+import downloadWeb from '../assets/download_web.png';
+import logoSvg from '../assets/vasyapp.svg';
 
 const t = translations.en; // Default for SSR
 const APP_VERSION = 'v0.1.2';
@@ -10,7 +27,7 @@ const RELEASE = 'https://github.com/suenot/vasya/releases/download/v0.1.2';
 const downloads = [
   {
     id: 'mac',
-    image: '/download_mac.png',
+    image: downloadMac,
     labelKey: 'downloadForMac',
     variants: [
       { labelKey: 'macSilicon', ext: ' (.dmg)', href: `${RELEASE}/Vasyapp_0.1.2_aarch64.dmg` },
@@ -19,7 +36,7 @@ const downloads = [
   },
   {
     id: 'windows',
-    image: '/download_windows.png',
+    image: downloadWindows,
     labelKey: 'downloadForWindows',
     variants: [
       { labelKey: 'windowsExe', ext: ' (.exe)', href: `${RELEASE}/Vasyapp_0.1.2_x64-setup.exe` },
@@ -27,7 +44,7 @@ const downloads = [
   },
   {
     id: 'linux',
-    image: '/download_linux.png',
+    image: downloadLinux,
     labelKey: 'downloadForLinux',
     variants: [
       { labelKey: 'linuxDeb', ext: ' (Ubuntu/Debian)', href: `${RELEASE}/Vasyapp_0.1.2_amd64.deb` },
@@ -36,7 +53,7 @@ const downloads = [
   },
   {
     id: 'android',
-    image: '/download_android.png',
+    image: downloadAndroid,
     labelKey: 'downloadForAndroid',
     variants: [
       { labelKey: 'androidApk', ext: '', href: `${RELEASE}/app-universal-release-unsigned.apk` },
@@ -44,25 +61,25 @@ const downloads = [
   },
   {
     id: 'ios',
-    image: '/download_ios.png',
+    image: downloadIos,
     labelKey: 'downloadForIos',
     comingSoon: true,
   },
   {
     id: 'web',
-    image: '/download_web.png',
+    image: downloadWeb,
     labelKey: 'downloadForWeb',
     comingSoon: true,
   }
 ];
 
 const features = [
-  { image: '/feature_voice_ai.png', titleKey: 'featureVoiceTitle', descKey: 'featureVoiceDesc' },
-  { image: '/feature_focus_v2.png', titleKey: 'featureFocusTitle', descKey: 'featureFocusDesc' },
-  { image: '/feature_multi_account.png', titleKey: 'featureMultiTitle', descKey: 'featureMultiDesc' },
-  { image: '/feature_privacy_first.png', titleKey: 'featurePrivacyTitle', descKey: 'featurePrivacyDesc' },
-  { image: '/feature_native_speed.png', titleKey: 'featureNativeTitle', descKey: 'featureNativeDesc' },
-  { image: '/feature_summaries.png', titleKey: 'featureSummariesTitle', descKey: 'featureSummariesDesc', comingSoon: true },
+  { image: featureVoiceAi, titleKey: 'featureVoiceTitle', descKey: 'featureVoiceDesc' },
+  { image: featureFocus, titleKey: 'featureFocusTitle', descKey: 'featureFocusDesc' },
+  { image: featureMulti, titleKey: 'featureMultiTitle', descKey: 'featureMultiDesc' },
+  { image: featurePrivacy, titleKey: 'featurePrivacyTitle', descKey: 'featurePrivacyDesc' },
+  { image: featureNative, titleKey: 'featureNativeTitle', descKey: 'featureNativeDesc' },
+  { image: featureSummaries, titleKey: 'featureSummariesTitle', descKey: 'featureSummariesDesc', comingSoon: true },
 ];
 ---
 
@@ -74,7 +91,7 @@ const features = [
   <div class="page">
     <header class="header glass">
       <div style="display: flex; align-items: center; gap: 10px;">
-        <img src="/vasyapp.svg" alt="Vasyapp Logo" width="32" height="32" />
+        <Image src={logoSvg} alt="Vasyapp Logo" width={32} height={32} />
         <span class="logoTitle" data-t="appName">{t.appName}</span>
         <span class="versionBadge">{APP_VERSION}</span>
       </div>
@@ -258,7 +275,7 @@ const features = [
               <div class={`featureCard ${f.comingSoon ? 'featureFuture' : ''}`}>
                 {f.comingSoon && <div class="badge" data-t="comingSoon">{t.comingSoon}</div>}
                 <div class="featureImage">
-                  <img src={f.image} alt={t[f.titleKey as keyof typeof t]} />
+                  <Image src={f.image} alt={t[f.titleKey as keyof typeof t]} />
                 </div>
                 <h3 data-t={f.titleKey}>{t[f.titleKey as keyof typeof t]}</h3>
                 <p data-t={f.descKey}>{t[f.descKey as keyof typeof t]}</p>
@@ -286,7 +303,7 @@ const features = [
                   <div class="comingSoonBadge" data-t="comingSoon">{t.comingSoon}</div>
                 )}
                 <div class="downloadCardImage">
-                  <img src={dl.image} alt={t[dl.labelKey as keyof typeof t]} />
+                  <Image src={dl.image} alt={t[dl.labelKey as keyof typeof t]} />
                 </div>
                 <h3 class="downloadCardTitle" data-t={dl.labelKey}>{t[dl.labelKey as keyof typeof t]}</h3>
                 {!dl.comingSoon && dl.variants && (
@@ -319,7 +336,7 @@ const features = [
 
     <footer class="footer">
       <div class="container">
-        <img src="/vasyapp.svg" alt="Vasyapp Logo" width="48" height="48" style="margin-bottom: 1rem;" />
+        <Image src={logoSvg} alt="Vasyapp Logo" width={48} height={48} style="margin-bottom: 1rem;" />
         <p data-t="footerText">{t.footerText}</p>
         <div class="footerLinks">
           <a href="https://github.com/suenot/vasya" target="_blank" rel="noopener noreferrer" data-t="github">{t.github}</a>
