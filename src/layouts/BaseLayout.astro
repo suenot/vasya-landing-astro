@@ -1,13 +1,6 @@
 ---
-import '@fontsource/inter/400.css';
-import '@fontsource/inter/500.css';
-import '@fontsource/inter/600.css';
-import '@fontsource/inter/700.css';
-import '@fontsource/outfit/400.css';
-import '@fontsource/outfit/500.css';
-import '@fontsource/outfit/600.css';
-import '@fontsource/outfit/700.css';
-import '@fontsource/outfit/800.css';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/outfit';
 import '../styles/globals.css';
 
 interface Props {
@@ -52,29 +45,33 @@ const { title, description = "The Telegram Client for Deep Focus" } = Astro.prop
 			})();
 
 			function updateContent(lang) {
-				if (!window.translations || !window.translations[lang]) return;
+				const translations = window.translations;
+				if (!translations || !translations[lang]) return;
 				
-				const t = window.translations[lang];
+				const t = translations[lang];
 				const elements = document.querySelectorAll('[data-t]');
+				const langBtns = document.querySelectorAll('.langBtn');
 				
-				for (let i = 0; i < elements.length; i++) {
-					const el = elements[i];
-					const key = el.getAttribute('data-t');
-					const val = t[key];
-					if (val) {
-						if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-							el.placeholder = val;
-						} else {
-							el.textContent = val;
+				// Batch all DOM writes in a single frame to avoid layout thrashing
+				requestAnimationFrame(() => {
+					for (let i = 0; i < elements.length; i++) {
+						const el = elements[i];
+						const key = el.getAttribute('data-t');
+						const val = t[key];
+						if (val) {
+							if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+								el.placeholder = val;
+							} else {
+								el.textContent = val;
+							}
 						}
 					}
-				}
-				
-				const btns = document.querySelectorAll('.langBtn');
-				for (let i = 0; i < btns.length; i++) {
-					const btn = btns[i];
-					btn.setAttribute('data-active', btn.getAttribute('data-lang') === lang);
-				}
+					
+					for (let i = 0; i < langBtns.length; i++) {
+						const btn = langBtns[i];
+						btn.setAttribute('data-active', btn.getAttribute('data-lang') === lang);
+					}
+				});
 
 				localStorage.setItem('lang', lang);
 			}
