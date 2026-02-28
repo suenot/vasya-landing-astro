@@ -12,8 +12,6 @@ interface Props {
 const { title, description = "The Telegram Client for Deep Focus" } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL('/og.png', Astro.site);
-ogImageURL.searchParams.set('title', title);
-ogImageURL.searchParams.set('description', description);
 ---
 
 <!doctype html>

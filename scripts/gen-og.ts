@@ -2,21 +2,21 @@ import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 import fs from 'node:fs';
 import path from 'node:path';
-import type { APIRoute } from 'astro';
 
-const fontBold = fs.readFileSync(path.resolve('./src/fonts/Inter-Bold.woff'));
-const fontRegular = fs.readFileSync(path.resolve('./src/fonts/Inter-Regular.woff'));
+async function generate() {
+    const fontPath = path.join(process.cwd(), 'src/fonts');
+    const fontBold = fs.readFileSync(path.join(fontPath, 'Inter-Bold.woff'));
+    const fontRegular = fs.readFileSync(path.join(fontPath, 'Inter-Regular.woff'));
 
-export const GET: APIRoute = async ({ url }) => {
-    const title = url.searchParams.get('title') || 'Vasyapp';
-    const description = url.searchParams.get('description') || 'The Telegram Client for Deep Focus';
+    const title = 'Vasyapp';
+    const description = 'The Telegram Client for Deep Focus';
+    const logoUrl = 'https://vasya.app/vasyapp.png';
 
     const svg = await satori(
         {
             type: 'div',
             props: {
                 children: [
-                    // Background Gradient
                     {
                         type: 'div',
                         props: {
@@ -31,7 +31,6 @@ export const GET: APIRoute = async ({ url }) => {
                                 padding: '40px',
                             },
                             children: [
-                                // Logo Section
                                 {
                                     type: 'div',
                                     props: {
@@ -45,19 +44,18 @@ export const GET: APIRoute = async ({ url }) => {
                                             {
                                                 type: 'img',
                                                 props: {
-                                                    src: 'https://vasya.app/vasyapp.png',
-                                                    width: 180,
-                                                    height: 180,
+                                                    src: logoUrl,
+                                                    width: 220,
+                                                    height: 220,
                                                     style: {
-                                                        borderRadius: '40px',
-                                                        boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+                                                        borderRadius: '50px',
+                                                        boxShadow: '0 30px 60px rgba(0,0,0,0.6)',
                                                     }
                                                 }
                                             }
                                         ]
                                     }
                                 },
-                                // Text Section
                                 {
                                     type: 'div',
                                     props: {
@@ -72,10 +70,10 @@ export const GET: APIRoute = async ({ url }) => {
                                                 type: 'h1',
                                                 props: {
                                                     style: {
-                                                        fontSize: '85px',
+                                                        fontSize: '100px',
                                                         fontWeight: 700,
                                                         color: 'white',
-                                                        marginBottom: '20px',
+                                                        marginBottom: '10px',
                                                         lineHeight: 1.1,
                                                     },
                                                     children: title,
@@ -85,9 +83,9 @@ export const GET: APIRoute = async ({ url }) => {
                                                 type: 'p',
                                                 props: {
                                                     style: {
-                                                        fontSize: '36px',
+                                                        fontSize: '42px',
                                                         color: '#b0c4de',
-                                                        maxWidth: '800px',
+                                                        maxWidth: '900px',
                                                         lineHeight: 1.4,
                                                     },
                                                     children: description,
@@ -96,18 +94,17 @@ export const GET: APIRoute = async ({ url }) => {
                                         ],
                                     },
                                 },
-                                // Footer
                                 {
                                     type: 'div',
                                     props: {
                                         style: {
                                             position: 'absolute',
-                                            bottom: '40px',
+                                            bottom: '60px',
                                             display: 'flex',
                                             alignItems: 'center',
-                                            gap: '10px',
+                                            gap: '12px',
                                             color: '#3390ec',
-                                            fontSize: '24px',
+                                            fontSize: '28px',
                                             fontWeight: 600,
                                         },
                                         children: [
@@ -156,10 +153,8 @@ export const GET: APIRoute = async ({ url }) => {
     const pngData = resvg.render();
     const pngBuffer = pngData.asPng();
 
-    return new Response(pngBuffer, {
-        headers: {
-            'Content-Type': 'image/png',
-            'Cache-Control': 'public, max-age=31536000, immutable',
-        },
-    });
-};
+    fs.writeFileSync(path.join(process.cwd(), 'public/og.png'), pngBuffer);
+    console.log('✅ OG image generated at public/og.png');
+}
+
+generate().catch(console.error);
