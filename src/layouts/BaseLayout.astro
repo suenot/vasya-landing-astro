@@ -2,14 +2,33 @@
 import '@fontsource-variable/inter';
 import '@fontsource-variable/outfit';
 import { SEO } from "astro-seo";
+import { Image } from 'astro:assets';
+import globalTranslations from '../data/translations.json';
+import logoSvg from '../assets/vasyapp.svg';
+import { APP_VERSION } from '../constants';
 import '../styles/globals.css';
 
 interface Props {
 	title: string;
 	description?: string;
+	showDownloadInNav?: boolean;
+	translationsOverride?: any;
 }
 
-const { title, description = "The Telegram Client for Deep Focus" } = Astro.props;
+const { 
+	title, 
+	description = "The Telegram Client for Deep Focus", 
+	showDownloadInNav = false,
+	translationsOverride
+} = Astro.props;
+
+// Merge global translations with potential page overrides
+const translations = {
+    en: { ...globalTranslations.en, ...(translationsOverride?.en || {}) },
+    ru: { ...globalTranslations.ru, ...(translationsOverride?.ru || {}) }
+};
+
+const t = translations.en;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL('/og.png', Astro.site);
 ---
@@ -46,7 +65,6 @@ const ogImageURL = new URL('/og.png', Astro.site);
 				image: ogImageURL.toString(),
 			}}
 			extend={{
-				// web app meta
 				meta: [
 					{ name: "viewport", content: "width=device-width" },
 					{ name: "generator", content: Astro.generator },
@@ -62,8 +80,11 @@ const ogImageURL = new URL('/og.png', Astro.site);
 			html, body { background-color: #0f171e; margin: 0; }
 		</style>
 
+		<script is:inline define:vars={{ translations }}>
+			window.translations = translations;
+		</script>
+
 		<script is:inline>
-			// Optimized script to avoid forced reflows and redundant work
 			(function() {
 				const savedLang = localStorage.getItem('lang');
 				const browserLang = navigator.language.split('-')[0];
@@ -87,7 +108,6 @@ const ogImageURL = new URL('/og.png', Astro.site);
 				const elements = document.querySelectorAll('[data-t]');
 				const langBtns = document.querySelectorAll('.langBtn');
 				
-				// Batch all DOM writes in a single frame to avoid layout thrashing
 				requestAnimationFrame(() => {
 					for (let i = 0; i < elements.length; i++) {
 						const el = elements[i];
@@ -119,11 +139,9 @@ const ogImageURL = new URL('/og.png', Astro.site);
 
 			document.addEventListener('DOMContentLoaded', () => {
 				const lang = document.documentElement.getAttribute('lang');
-				// Only run translation if not in English (which is the static default)
 				if (lang && lang !== 'en') {
 					updateContent(lang);
 				} else {
-					// Even in English, we need to set active state for buttons
 					document.querySelectorAll('.langBtn').forEach(btn => {
 						btn.setAttribute('data-active', btn.getAttribute('data-lang') === 'en');
 					});
@@ -132,7 +150,44 @@ const ogImageURL = new URL('/og.png', Astro.site);
 		</script>
 	</head>
 	<body>
-		<slot />
+		<div class="page">
+			<header class="header glass">
+				<div style="display: flex; align-items: center; gap: 10px;">
+					<a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+						<Image src={logoSvg} alt="Vasyapp Logo" width={32} height={32} loading="eager" fetchpriority="high" />
+						<span class="logoTitle" data-t="appName">{t.appName}</span>
+					</a>
+					<span class="versionBadge">{APP_VERSION}</span>
+				</div>
+				<nav style="display: flex; gap: 2rem; align-items: center;">
+					<div class="langSwitcher">
+						<button onclick="setLanguage('en')" class="langBtn" data-lang="en" aria-label="Switch language to English">EN</button>
+						<button onclick="setLanguage('ru')" class="langBtn" data-lang="ru" aria-label="Switch language to Russian">RU</button>
+					</div>
+					{showDownloadInNav && (
+						<a href="#download" class="btn-primary" style="padding: 0.6rem 1.2rem;" data-t="download">{t.download}</a>
+					)}
+				</nav>
+			</header>
+
+			<slot />
+
+			<footer class="footer">
+				<div class="container">
+					<Image src={logoSvg} alt="Vasyapp Logo" width={48} height={48} style="margin-bottom: 1rem;" />
+					<p data-t="footerText">{t.footerText}</p>
+					<div class="footerLinks">
+						<a href="https://github.com/suenot/vasya" target="_blank" rel="noopener noreferrer" data-t="github">{t.github}</a>
+						<a href="/privacy" data-t="privacy">{t.privacy}</a>
+						<a href="/terms" data-t="terms">{t.terms}</a>
+					</div>
+					<div class="footerReforms">
+						⚡ <a href="https://reforms.ai" target="_blank" rel="noopener noreferrer">Built with Reforms.AI</a> • AI-powered projects for companies
+					</div>
+				</div>
+			</footer>
+		</div>
 	</body>
 </html>
+
 

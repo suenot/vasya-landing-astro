@@ -1,34 +1,14 @@
 {
-    "privacy": {
-        "en": {
-            "title": "Privacy Policy",
-            "lastUpdated": "Last updated: February 27, 2026",
-            "backToHome": "← Back to Home",
-            "footerText": "© 2026 Vasya.app. Open source Telegram client.",
-            "appName": "Vasyapp"
-        },
-        "ru": {
-            "title": "Политика конфиденциальности",
-            "lastUpdated": "Последнее обновление: 27 февраля 2026",
-            "backToHome": "← На главную",
-            "footerText": "© 2026 Васяяп. Open source Telegram клиент.",
-            "appName": "Васяяп"
-        }
+    "en": {
+        "backToHome": "← Back to Home",
+        "privacyTitle": "Privacy Policy",
+        "termsTitle": "Terms of Use",
+        "lastUpdated": "Last updated: February 27, 2026"
     },
-    "terms": {
-        "en": {
-            "title": "Terms of Use",
-            "lastUpdated": "Last updated: February 27, 2026",
-            "backToHome": "← Back to Home",
-            "footerText": "© 2026 Vasya.app. Open source Telegram client.",
-            "appName": "Vasyapp"
-        },
-        "ru": {
-            "title": "Условия использования",
-            "lastUpdated": "Последнее обновление: 27 февраля 2026",
-            "backToHome": "← На главную",
-            "footerText": "© 2026 Васяяп. Open source Telegram клиент.",
-            "appName": "Васяяп"
-        }
+    "ru": {
+        "backToHome": "← На главную",
+        "privacyTitle": "Политика конфиденциальности",
+        "termsTitle": "Условия использования",
+        "lastUpdated": "Последнее обновление: 27 февраля 2026"
     }
 }
