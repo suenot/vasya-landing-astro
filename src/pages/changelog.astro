@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import changelogRaw from '../data/changelog.json';
+import '../styles/changelog.css';
+
+interface ChangelogEntry {
+  version: string;
+  date: string;
+  tag: string | null;
+  changes: {
+    features?: string[];
+    fixes?: string[];
+    improvements?: string[];
+    security?: string[];
+  };
+}
+
+const changelog = changelogRaw as ChangelogEntry[];
+---
+
+<BaseLayout title="Changelog - Vasyapp">
+  <main>
+    <section class="changelogHero">
+      <div class="container">
+        <h1 class="changelogTitle">Changelog</h1>
+        <p class="changelogSubtitle">Track every update, feature, and fix shipped in Vasyapp.</p>
+      </div>
+    </section>
+
+    <section class="changelogSection">
+      <div class="container">
+        <div class="timeline">
+          {changelog.map((release, index) => (
+            <article class={`release ${index === 0 ? 'releaseLatest' : ''}`} id={`v${release.version}`}>
+              <div class="releaseHeader">
+                <div class="releaseMeta">
+                  <h2 class="releaseVersion">
+                    {release.tag ? (
+                      <a href={`https://github.com/suenot/vasya/releases/tag/${release.tag}`} target="_blank" rel="noopener noreferrer">
+                        v{release.version}
+                      </a>
+                    ) : (
+                      <span>v{release.version}</span>
+                    )}
+                  </h2>
+                  {index === 0 && <span class="latestBadge">Latest</span>}
+                </div>
+                <time class="releaseDate" datetime={release.date}>{release.date}</time>
+              </div>
+
+              <div class="releaseBody">
+                {release.changes.features && release.changes.features.length > 0 && (
+                  <div class="changeGroup">
+                    <h3 class="changeGroupTitle changeGroupFeatures">Features</h3>
+                    <ul class="changeList">
+                      {release.changes.features.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {release.changes.fixes && release.changes.fixes.length > 0 && (
+                  <div class="changeGroup">
+                    <h3 class="changeGroupTitle changeGroupFixes">Bug Fixes</h3>
+                    <ul class="changeList">
+                      {release.changes.fixes.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {release.changes.improvements && release.changes.improvements.length > 0 && (
+                  <div class="changeGroup">
+                    <h3 class="changeGroupTitle changeGroupImprovements">Improvements</h3>
+                    <ul class="changeList">
+                      {release.changes.improvements.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {release.changes.security && release.changes.security.length > 0 && (
+                  <div class="changeGroup">
+                    <h3 class="changeGroupTitle changeGroupSecurity">Security</h3>
+                    <ul class="changeList">
+                      {release.changes.security.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

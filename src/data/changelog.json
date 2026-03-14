@@ -1,0 +1,132 @@
+[
+  {
+    "version": "0.4.0",
+    "date": "2026-03-14",
+    "tag": null,
+    "changes": {
+      "features": [
+        "Telegram forum topics support",
+        "Hotkeys, media attachments, voice recording, call placeholders",
+        "Unread badges, enhanced search, folder counters",
+        "Telegram-style message bubbles with arrow key navigation"
+      ],
+      "improvements": [
+        "Disable autocomplete in inputs"
+      ]
+    }
+  },
+  {
+    "version": "0.3.0",
+    "date": "2026-03-14",
+    "tag": "v0.3.0",
+    "changes": {
+      "features": [
+        "Folder icons, vertical layout, and chat density settings",
+        "Dual storage mode (local SQLite + remote backend) with security hardening",
+        "New \"Blue (Telegram)\" theme option"
+      ],
+      "fixes": [
+        "Resolve API contract mismatches and add comprehensive tests"
+      ]
+    }
+  },
+  {
+    "version": "0.2.0",
+    "date": "2026-03-13",
+    "tag": "v0.2.0",
+    "changes": {
+      "features": [
+        "Chat folders with SQLite persistence, tab management, context menu",
+        "Redesign UI with Anthropic theme and improved typography",
+        "Internationalization support with language selector",
+        "Phone mask and disabled inputs during login submission",
+        "Account logout functionality"
+      ]
+    }
+  },
+  {
+    "version": "0.1.2",
+    "date": "2026-02-28",
+    "tag": "v0.1.2",
+    "changes": {
+      "features": [
+        "Cross-platform release workflow for all platforms",
+        "Global hotkeys support and internationalized settings UI",
+        "Audio file magic byte detection and transcription error handling",
+        "macOS app Resources directory .env loading",
+        "Fullscreen image viewer with zoom and pan controls",
+        "Real-time progress events for Whisper STT"
+      ],
+      "fixes": [
+        "Show actual error messages during login, validate API credentials",
+        "Use NSIS instead of WiX for Windows builds",
+        "Pre-download NSIS tools for Windows, use deb+rpm for Linux",
+        "Use printf+env for .env creation (fix macOS sed -i)",
+        "Auto-detect bundled API credentials, skip setup screen"
+      ],
+      "security": [
+        "Don't expose API credentials to frontend",
+        "Embed secrets at compile-time, remove .env from bundle"
+      ]
+    }
+  },
+  {
+    "version": "0.1.1",
+    "date": "2026-02-27",
+    "tag": null,
+    "changes": {
+      "fixes": [
+        "Fix .env whitespace",
+        "Add Android icon generation"
+      ]
+    }
+  },
+  {
+    "version": "0.1.0",
+    "date": "2026-02-13",
+    "tag": null,
+    "changes": {
+      "features": [
+        "Speech-to-text transcription with Deepgram and local Whisper support",
+        "STT UI components and auto-transcription logic",
+        "Local media caching for sent files",
+        "Result caching and pending promise tracking in MediaDownloadQueue",
+        "Clipboard manager and drag-and-drop file support",
+        "Media sending capability with paste support",
+        "User avatar retrieval and chat deletion commands",
+        "FLOOD_WAIT retry mechanism and avatar download rate limiting",
+        "Media upload and search UI with mime type detection"
+      ],
+      "fixes": [
+        "Handle image mime type detection and deduplicate messages on send",
+        "Ensure MessageList scrolls to bottom on initial load and chat switch",
+        "Fix Android build: use rustls instead of openssl in reqwest"
+      ],
+      "improvements": [
+        "Extract VoiceMessage component and improve voice message UI",
+        "Redesign account switcher with circular avatar layout",
+        "Rename project to Vasyapp and optimize chat loading"
+      ]
+    }
+  },
+  {
+    "version": "0.0.1",
+    "date": "2026-01-21",
+    "tag": null,
+    "changes": {
+      "features": [
+        "Initial release",
+        "Telegram client with chat loading, caching, and avatars",
+        "Media download functionality",
+        "Link previews in messages",
+        "Webpage preview in message list",
+        "Rebrand to Vasyapp with updated UI and styling"
+      ],
+      "improvements": [
+        "Simplify auth commands and migrate to AppState storage",
+        "Replace relative paths with app_data_dir",
+        "Improve .env loading and logging initialization"
+      ]
+    }
+  }
+]

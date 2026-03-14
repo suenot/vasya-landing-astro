@@ -99,6 +99,18 @@ h4 {
     color: white;
 }
 
+.navLink {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+    text-decoration: none;
+}
+
+.navLink:hover {
+    color: var(--text-primary);
+}
+
 .gradient-text {
     background: linear-gradient(135deg, var(--accent-color), #8e2de2);
     -webkit-background-clip: text;

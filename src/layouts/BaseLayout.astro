@@ -160,6 +160,7 @@ const ogImageURL = new URL('/og.png', Astro.site);
 					<span class="versionBadge">{APP_VERSION}</span>
 				</div>
 				<nav style="display: flex; gap: 2rem; align-items: center;">
+					<a href="/changelog" class="navLink">Changelog</a>
 					<div class="langSwitcher">
 						<button onclick="setLanguage('en')" class="langBtn" data-lang="en" aria-label="Switch language to English">EN</button>
 						<button onclick="setLanguage('ru')" class="langBtn" data-lang="ru" aria-label="Switch language to Russian">RU</button>
@@ -178,6 +179,7 @@ const ogImageURL = new URL('/og.png', Astro.site);
 					<p data-t="footerText">{t.footerText}</p>
 					<div class="footerLinks">
 						<a href="https://github.com/suenot/vasya" target="_blank" rel="noopener noreferrer" data-t="github">{t.github}</a>
+						<a href="/changelog">Changelog</a>
 						<a href="/privacy" data-t="privacy">{t.privacy}</a>
 						<a href="/terms" data-t="terms">{t.terms}</a>
 					</div>
