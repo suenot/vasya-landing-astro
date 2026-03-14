@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import translations from '../data/translations.json';
 import { Image } from 'astro:assets';
 import '../styles/page.css';
-import { APP_VERSION, RELEASE_URL } from '../constants';
+import { APP_VERSION, APP_VERSION_NUM, RELEASE_URL } from '../constants';
 
 // Import images
 import featureVoiceAi from '../assets/feature_voice_ai.png';
@@ -29,8 +29,8 @@ const downloads = [
     image: downloadMac,
     labelKey: 'downloadForMac',
     variants: [
-      { labelKey: 'macSilicon', ext: ' (.dmg)', href: `${RELEASE}/Vasyapp_0.2.0_aarch64.dmg` },
-      { labelKey: 'macIntel', ext: ' (.dmg)', href: `${RELEASE}/Vasyapp_0.2.0_x64.dmg` },
+      { labelKey: 'macSilicon', ext: ' (.dmg)', href: `${RELEASE}/Vasyapp_${APP_VERSION_NUM}_aarch64.dmg` },
+      { labelKey: 'macIntel', ext: ' (.dmg)', href: `${RELEASE}/Vasyapp_${APP_VERSION_NUM}_x64.dmg` },
     ],
   },
   {
@@ -38,7 +38,7 @@ const downloads = [
     image: downloadWindows,
     labelKey: 'downloadForWindows',
     variants: [
-      { labelKey: 'windowsExe', ext: ' (.exe)', href: `${RELEASE}/Vasyapp_0.2.0_x64-setup.exe` },
+      { labelKey: 'windowsExe', ext: ' (.exe)', href: `${RELEASE}/Vasyapp_${APP_VERSION_NUM}_x64-setup.exe` },
     ],
   },
   {
@@ -46,8 +46,8 @@ const downloads = [
     image: downloadLinux,
     labelKey: 'downloadForLinux',
     variants: [
-      { labelKey: 'linuxDeb', ext: ' (Ubuntu/Debian)', href: `${RELEASE}/Vasyapp_0.2.0_amd64.deb` },
-      { labelKey: 'linuxRpm', ext: ' (Fedora/RHEL)', href: `${RELEASE}/Vasyapp-0.2.0-1.x86_64.rpm` },
+      { labelKey: 'linuxDeb', ext: ' (Ubuntu/Debian)', href: `${RELEASE}/Vasyapp_${APP_VERSION_NUM}_amd64.deb` },
+      { labelKey: 'linuxRpm', ext: ' (Fedora/RHEL)', href: `${RELEASE}/Vasyapp-${APP_VERSION_NUM}-1.x86_64.rpm` },
     ],
   },
   {

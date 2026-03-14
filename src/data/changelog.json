@@ -1,5 +1,32 @@
 [
   {
+    "version": "0.5.0",
+    "date": "2026-03-14",
+    "tag": "v0.5.0",
+    "changes": {
+      "features": [
+        "Telegram-style message bubbles with rounded corners and tail effect",
+        "Voice recorder with waveform visualization (OGG/Opus)",
+        "Attachment menu: photo/video picker, document picker, camera capture",
+        "Enhanced search with 3 sections: Contacts & Chats, Global Search, Messages",
+        "Unread message count badges on chats and folder tabs",
+        "27 Telegram-like hotkeys with settings page",
+        "Arrow Up/Down keyboard navigation through chat list",
+        "Changelog page on landing site"
+      ],
+      "fixes": [
+        "Fix search results not scrolling",
+        "Center logo icon in login screen SVG",
+        "Fix raw_sql for multi-statement PostgreSQL migrations"
+      ],
+      "improvements": [
+        "Disable autocomplete/autocorrect/spellcheck on all text inputs",
+        "Folder unread badges use theme accent color",
+        "Landing download links now use version from constants (no more hardcoded versions)"
+      ]
+    }
+  },
+  {
     "version": "0.4.0",
     "date": "2026-03-14",
     "tag": null,
