@@ -157,30 +157,21 @@ h4 {
     line-height: 1.4;
 }
 
-.langSwitcher {
-    display: flex;
-    background: var(--bg-secondary);
-    padding: 4px;
+.langToggle {
+    padding: 4px 10px;
     border-radius: 8px;
-    border: 1px solid var(--border-color);
-}
-
-.langBtn {
-    padding: 4px 8px;
-    border-radius: 6px;
     font-size: 12px;
     font-weight: 600;
-    background: transparent;
+    background: var(--bg-secondary);
     color: var(--text-secondary);
-    border: none;
+    border: 1px solid var(--border-color);
     cursor: pointer;
     transition: all 0.2s;
 }
 
-.langBtn[data-active="true"] {
+.langToggle:hover {
     background: var(--sidebar-active);
     color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .footer {
@@ -256,7 +247,7 @@ h4 {
     .header {
         height: 56px;
     }
-    .langBtn {
+    .langToggle {
         padding: 4px 6px;
         font-size: 11px;
     }

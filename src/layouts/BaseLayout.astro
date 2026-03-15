@@ -103,11 +103,10 @@ const ogImageURL = new URL('/og.png', Astro.site);
 			function updateContent(lang) {
 				const translations = window.translations;
 				if (!translations || !translations[lang]) return;
-				
+
 				const t = translations[lang];
 				const elements = document.querySelectorAll('[data-t]');
-				const langBtns = document.querySelectorAll('.langBtn');
-				
+
 				requestAnimationFrame(() => {
 					for (let i = 0; i < elements.length; i++) {
 						const el = elements[i];
@@ -121,11 +120,9 @@ const ogImageURL = new URL('/og.png', Astro.site);
 							}
 						}
 					}
-					
-					for (let i = 0; i < langBtns.length; i++) {
-						const btn = langBtns[i];
-						btn.setAttribute('data-active', btn.getAttribute('data-lang') === lang);
-					}
+
+					const toggle = document.getElementById('langToggle');
+					if (toggle) toggle.textContent = lang.toUpperCase();
 				});
 
 				localStorage.setItem('lang', lang);
@@ -137,14 +134,19 @@ const ogImageURL = new URL('/og.png', Astro.site);
 				updateContent(lang);
 			};
 
+			window.toggleLanguage = () => {
+				const current = document.documentElement.getAttribute('lang') || 'en';
+				const next = current === 'en' ? 'ru' : 'en';
+				document.documentElement.setAttribute('lang', next);
+				updateContent(next);
+			};
+
 			document.addEventListener('DOMContentLoaded', () => {
-				const lang = document.documentElement.getAttribute('lang');
-				if (lang && lang !== 'en') {
+				const lang = document.documentElement.getAttribute('lang') || 'en';
+				const toggle = document.getElementById('langToggle');
+				if (toggle) toggle.textContent = lang.toUpperCase();
+				if (lang !== 'en') {
 					updateContent(lang);
-				} else {
-					document.querySelectorAll('.langBtn').forEach(btn => {
-						btn.setAttribute('data-active', btn.getAttribute('data-lang') === 'en');
-					});
 				}
 			});
 		</script>
@@ -161,10 +163,7 @@ const ogImageURL = new URL('/og.png', Astro.site);
 				</div>
 				<nav style="display: flex; gap: 2rem; align-items: center;">
 					<a href="/changelog" class="navLink">Changelog</a>
-					<div class="langSwitcher">
-						<button onclick="setLanguage('en')" class="langBtn" data-lang="en" aria-label="Switch language to English">EN</button>
-						<button onclick="setLanguage('ru')" class="langBtn" data-lang="ru" aria-label="Switch language to Russian">RU</button>
-					</div>
+					<button onclick="toggleLanguage()" class="langToggle" id="langToggle" aria-label="Toggle language">EN</button>
 					{showDownloadInNav && (
 						<a href="#download" class="btn-primary" style="padding: 0.6rem 1.2rem;" data-t="download">{t.download}</a>
 					)}
