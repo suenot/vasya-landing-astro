@@ -71,7 +71,11 @@
         "accS": "S",
         "accE": "E",
         "accN": "N",
-        "appName": "Vasyapp"
+        "appName": "Vasyapp",
+        "featureAgentTitle": "Agent-Native API",
+        "featureAgentDesc": "A full REST + GraphQL API with scoped agent keys, an audit log, and a Model Context Protocol server — let an AI agent read and send your messages, safely.",
+        "featureSelfHostTitle": "Self-Hosted, Your Way",
+        "featureSelfHostDesc": "Run the engine right inside the app with no backend, expose a local API for your own agents, or deploy the server on your own machine. Your data, your infrastructure."
     },
     "ru": {
         "navFeatures": "Возможности",
@@ -145,6 +149,10 @@
         "accS": "С",
         "accE": "Е",
         "accN": "Н",
-        "appName": "Васяяп"
+        "appName": "Васяяп",
+        "featureAgentTitle": "API для AI-агентов",
+        "featureAgentDesc": "Полноценный REST + GraphQL API со scoped-ключами, аудит-логом и MCP-сервером — AI-агент может безопасно читать и отправлять сообщения.",
+        "featureSelfHostTitle": "Self-host как удобно",
+        "featureSelfHostDesc": "Движок работает прямо в приложении без бэкенда, можно поднять локальный API для своих агентов или развернуть сервер на своём железе. Твои данные — твоя инфраструктура."
     }
 }
