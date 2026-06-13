@@ -75,7 +75,9 @@
         "featureAgentTitle": "Agent-Native API",
         "featureAgentDesc": "A full REST + GraphQL API with scoped agent keys, an audit log, and a Model Context Protocol server — let an AI agent read and send your messages, safely.",
         "featureSelfHostTitle": "Self-Hosted, Your Way",
-        "featureSelfHostDesc": "Run the engine right inside the app with no backend, expose a local API for your own agents, or deploy the server on your own machine. Your data, your infrastructure."
+        "featureSelfHostDesc": "Run the engine right inside the app with no backend, expose a local API for your own agents, or deploy the server on your own machine. Your data, your infrastructure.",
+        "featureModesTitle": "Two Ways to Run",
+        "featureModesDesc": "Use it out of the box — the engine runs right inside the app, no server, no setup. Or run it self-hosted on your own machine. One app, two modes, your call."
     },
     "ru": {
         "navFeatures": "Возможности",
@@ -153,6 +155,8 @@
         "featureAgentTitle": "API для AI-агентов",
         "featureAgentDesc": "Полноценный REST + GraphQL API со scoped-ключами, аудит-логом и MCP-сервером — AI-агент может безопасно читать и отправлять сообщения.",
         "featureSelfHostTitle": "Self-host как удобно",
-        "featureSelfHostDesc": "Движок работает прямо в приложении без бэкенда, можно поднять локальный API для своих агентов или развернуть сервер на своём железе. Твои данные — твоя инфраструктура."
+        "featureSelfHostDesc": "Движок работает прямо в приложении без бэкенда, можно поднять локальный API для своих агентов или развернуть сервер на своём железе. Твои данные — твоя инфраструктура.",
+        "featureModesTitle": "Работает в двух режимах",
+        "featureModesDesc": "Из коробки — движок работает прямо в приложении, без сервера и настройки. Или подними его в self-hosted-режиме на своём железе. Одно приложение, два режима — выбираешь ты."
     }
 }

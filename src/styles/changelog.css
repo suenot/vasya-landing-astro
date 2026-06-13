@@ -202,3 +202,33 @@
     font-size: 1.25rem;
   }
 }
+
+/* Release notes rendered from GitHub Markdown (changelog auto-sourced) */
+.releaseNotes .changeGroupTitle {
+  margin-top: 1.5rem;
+}
+.releaseNotes .changeGroupTitle:first-child {
+  margin-top: 0;
+}
+.releaseNotes p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0.5rem 0;
+}
+.releaseNotes code {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+.releaseNotes a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+.releaseNotes a:hover {
+  text-decoration: underline;
+}
+.releaseNotes strong {
+  color: var(--text-primary);
+}

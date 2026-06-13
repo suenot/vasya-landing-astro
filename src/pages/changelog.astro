@@ -1,13 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import changelogRaw from '../data/changelog.json';
+import { getReleases, mdToHtml } from '../lib/releases';
 import '../styles/changelog.css';
 
 interface ChangelogEntry {
   version: string;
   date: string;
   tag: string | null;
-  changes: {
+  html?: string; // rendered GitHub release notes
+  changes?: {
     features?: string[];
     fixes?: string[];
     improvements?: string[];
@@ -15,7 +17,15 @@ interface ChangelogEntry {
   };
 }
 
-const changelog = changelogRaw as ChangelogEntry[];
+// Source of truth: GitHub Releases (build-time). Falls back to the bundled
+// changelog.json if GitHub is unreachable.
+const releases = await getReleases();
+const changelog: ChangelogEntry[] =
+  releases && releases.length
+    ? releases
+        .filter((r) => r.body && r.body.trim())
+        .map((r) => ({ version: r.version, date: r.date, tag: r.tag, html: mdToHtml(r.body) }))
+    : (changelogRaw as ChangelogEntry[]);
 ---
 
 <BaseLayout title="Changelog - Vasyapp">
@@ -49,48 +59,43 @@ const changelog = changelogRaw as ChangelogEntry[];
               </div>
 
               <div class="releaseBody">
-                {release.changes.features && release.changes.features.length > 0 && (
-                  <div class="changeGroup">
-                    <h3 class="changeGroupTitle changeGroupFeatures">Features</h3>
-                    <ul class="changeList">
-                      {release.changes.features.map((item) => (
-                        <li>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {release.changes.fixes && release.changes.fixes.length > 0 && (
-                  <div class="changeGroup">
-                    <h3 class="changeGroupTitle changeGroupFixes">Bug Fixes</h3>
-                    <ul class="changeList">
-                      {release.changes.fixes.map((item) => (
-                        <li>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {release.changes.improvements && release.changes.improvements.length > 0 && (
-                  <div class="changeGroup">
-                    <h3 class="changeGroupTitle changeGroupImprovements">Improvements</h3>
-                    <ul class="changeList">
-                      {release.changes.improvements.map((item) => (
-                        <li>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {release.changes.security && release.changes.security.length > 0 && (
-                  <div class="changeGroup">
-                    <h3 class="changeGroupTitle changeGroupSecurity">Security</h3>
-                    <ul class="changeList">
-                      {release.changes.security.map((item) => (
-                        <li>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
+                {release.html ? (
+                  <div class="releaseNotes" set:html={release.html} />
+                ) : (
+                  <>
+                    {release.changes?.features && release.changes.features.length > 0 && (
+                      <div class="changeGroup">
+                        <h3 class="changeGroupTitle changeGroupFeatures">Features</h3>
+                        <ul class="changeList">
+                          {release.changes.features.map((item) => (<li>{item}</li>))}
+                        </ul>
+                      </div>
+                    )}
+                    {release.changes?.fixes && release.changes.fixes.length > 0 && (
+                      <div class="changeGroup">
+                        <h3 class="changeGroupTitle changeGroupFixes">Bug Fixes</h3>
+                        <ul class="changeList">
+                          {release.changes.fixes.map((item) => (<li>{item}</li>))}
+                        </ul>
+                      </div>
+                    )}
+                    {release.changes?.improvements && release.changes.improvements.length > 0 && (
+                      <div class="changeGroup">
+                        <h3 class="changeGroupTitle changeGroupImprovements">Improvements</h3>
+                        <ul class="changeList">
+                          {release.changes.improvements.map((item) => (<li>{item}</li>))}
+                        </ul>
+                      </div>
+                    )}
+                    {release.changes?.security && release.changes.security.length > 0 && (
+                      <div class="changeGroup">
+                        <h3 class="changeGroupTitle changeGroupSecurity">Security</h3>
+                        <ul class="changeList">
+                          {release.changes.security.map((item) => (<li>{item}</li>))}
+                        </ul>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </article>

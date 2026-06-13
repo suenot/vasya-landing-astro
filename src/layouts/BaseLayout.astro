@@ -6,7 +6,11 @@ import { Image } from 'astro:assets';
 import globalTranslations from '../data/translations.json';
 import logoSvg from '../assets/vasyapp.svg';
 import { APP_VERSION } from '../constants';
+import { getLatest } from '../lib/releases';
 import '../styles/globals.css';
+
+// Version badge tracks the latest GitHub release (build-time), constant fallback.
+const appVersion = (await getLatest())?.tag ?? APP_VERSION;
 
 interface Props {
 	title: string;
@@ -159,7 +163,7 @@ const ogImageURL = new URL('/og.png', Astro.site);
 						<Image src={logoSvg} alt="Vasyapp Logo" width={32} height={32} loading="eager" fetchpriority="high" />
 						<span class="logoTitle" data-t="appName">{t.appName}</span>
 					</a>
-					<span class="versionBadge">{APP_VERSION}</span>
+					<span class="versionBadge">{appVersion}</span>
 				</div>
 				<nav style="display: flex; gap: 2rem; align-items: center;">
 					<a href="/changelog" class="navLink">Changelog</a>

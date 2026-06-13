@@ -3,7 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import translations from '../data/translations.json';
 import { Image } from 'astro:assets';
 import '../styles/page.css';
-import { APP_VERSION, APP_VERSION_NUM, RELEASE_URL } from '../constants';
+import { APP_VERSION_NUM, RELEASE_URL } from '../constants';
+import { getLatest, pickAsset } from '../lib/releases';
 
 // Import images
 import featureVoiceAi from '../assets/feature_voice_ai.png';
@@ -14,6 +15,7 @@ import featureNative from '../assets/feature_native_speed.png';
 import featureSummaries from '../assets/feature_summaries.png';
 import featureAgent from '../assets/feature_agent.png';
 import featureSelfHost from '../assets/feature_selfhost.png';
+import featureModes from '../assets/feature_modes.png';
 
 import downloadMac from '../assets/download_mac.png';
 import downloadWindows from '../assets/download_windows.png';
@@ -23,7 +25,14 @@ import downloadIos from '../assets/download_ios.png';
 import downloadWeb from '../assets/download_web.png';
 
 const t = translations.en;
-const RELEASE = RELEASE_URL;
+
+// Version + download links come from the latest GitHub release at build time;
+// if GitHub is unreachable we fall back to the pinned constants.
+const latest = await getLatest();
+const VERSION_NUM = latest?.version ?? APP_VERSION_NUM;
+const RELEASE = latest ? `https://github.com/suenot/vasya/releases/download/${latest.tag}` : RELEASE_URL;
+const ASSETS = latest?.assets ?? [];
+const dl = (re: RegExp, fallback: string) => pickAsset(ASSETS, re) ?? fallback;
 
 const downloads = [
   {
@@ -31,8 +40,8 @@ const downloads = [
     image: downloadMac,
     labelKey: 'downloadForMac',
     variants: [
-      { labelKey: 'macSilicon', ext: ' (.dmg)', href: `${RELEASE}/Vasyapp_${APP_VERSION_NUM}_aarch64.dmg` },
-      { labelKey: 'macIntel', ext: ' (.dmg)', href: `${RELEASE}/Vasyapp_${APP_VERSION_NUM}_x64.dmg` },
+      { labelKey: 'macSilicon', ext: ' (.dmg)', href: dl(/aarch64\.dmg$/, `${RELEASE}/Vasyapp_${VERSION_NUM}_aarch64.dmg`) },
+      { labelKey: 'macIntel', ext: ' (.dmg)', href: dl(/x64\.dmg$/, `${RELEASE}/Vasyapp_${VERSION_NUM}_x64.dmg`) },
     ],
   },
   {
@@ -40,7 +49,7 @@ const downloads = [
     image: downloadWindows,
     labelKey: 'downloadForWindows',
     variants: [
-      { labelKey: 'windowsExe', ext: ' (.exe)', href: `${RELEASE}/Vasyapp_${APP_VERSION_NUM}_x64-setup.exe` },
+      { labelKey: 'windowsExe', ext: ' (.exe)', href: dl(/x64-setup\.exe$/, `${RELEASE}/Vasyapp_${VERSION_NUM}_x64-setup.exe`) },
     ],
   },
   {
@@ -48,8 +57,8 @@ const downloads = [
     image: downloadLinux,
     labelKey: 'downloadForLinux',
     variants: [
-      { labelKey: 'linuxDeb', ext: ' (Ubuntu/Debian)', href: `${RELEASE}/Vasyapp_${APP_VERSION_NUM}_amd64.deb` },
-      { labelKey: 'linuxRpm', ext: ' (Fedora/RHEL)', href: `${RELEASE}/Vasyapp-${APP_VERSION_NUM}-1.x86_64.rpm` },
+      { labelKey: 'linuxDeb', ext: ' (Ubuntu/Debian)', href: dl(/amd64\.deb$/, `${RELEASE}/Vasyapp_${VERSION_NUM}_amd64.deb`) },
+      { labelKey: 'linuxRpm', ext: ' (Fedora/RHEL)', href: dl(/x86_64\.rpm$/, `${RELEASE}/Vasyapp-${VERSION_NUM}-1.x86_64.rpm`) },
     ],
   },
   {
@@ -57,7 +66,7 @@ const downloads = [
     image: downloadAndroid,
     labelKey: 'downloadForAndroid',
     variants: [
-      { labelKey: 'androidApk', ext: '', href: `${RELEASE}/app-universal-release-unsigned.apk` },
+      { labelKey: 'androidApk', ext: '', href: dl(/android-universal\.apk$/, `${RELEASE}/vasyapp-${VERSION_NUM}-android-universal.apk`) },
     ],
   },
   {
@@ -82,6 +91,7 @@ const features = [
   { image: featureNative, titleKey: 'featureNativeTitle', descKey: 'featureNativeDesc' },
   { image: featureAgent, titleKey: 'featureAgentTitle', descKey: 'featureAgentDesc' },
   { image: featureSelfHost, titleKey: 'featureSelfHostTitle', descKey: 'featureSelfHostDesc' },
+  { image: featureModes, titleKey: 'featureModesTitle', descKey: 'featureModesDesc' },
   { image: featureSummaries, titleKey: 'featureSummariesTitle', descKey: 'featureSummariesDesc', comingSoon: true },
 ];
 ---
