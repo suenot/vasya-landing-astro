@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import translations from '../data/translations.json';
 import { Image } from 'astro:assets';
 import '../styles/page.css';
+import '../styles/motion.css';
 import { APP_VERSION_NUM, RELEASE_URL } from '../constants';
 import { getLatest, pickAsset } from '../lib/releases';
 
@@ -97,6 +98,12 @@ const features = [
 ---
 
 <BaseLayout title="Vasyapp - The Telegram Client for Deep Focus" showDownloadInNav={true}>
+    <script is:inline>
+      // Hidden "before" states only exist when JS and motion are available.
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+        document.documentElement.classList.add('js');
+      }
+    </script>
     <main>
       <section class="hero">
         <div class="container">
@@ -315,3 +322,8 @@ const features = [
 
     </main>
 </BaseLayout>
+
+<script>
+  import { initMotion } from '../scripts/motion';
+  initMotion();
+</script>
