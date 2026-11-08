@@ -1,0 +1,66 @@
+---
+import translations from '../data/translations.json';
+const t = translations.en as Record<string, string>;
+const clients = [
+  { name: 'Web', badge: 'archPrimary', primary: true },
+  { name: 'archDesktop', sub: 'Tauri', tr: true },
+  { name: 'archNative', sub: 'GPUI · Iced', tr: true },
+  { name: 'archAgents', sub: 'archAgentsDesc', tr: true, subTr: true },
+];
+const channels = [
+  { name: 'Telegram', badge: 'archLive', live: true },
+  { name: 'WhatsApp', badge: 'archPlanned' },
+  { name: 'archEmail', badge: 'archPlanned', tr: true },
+];
+---
+<section id="architecture" class="arch">
+  <div class="container">
+    <h2 class="sectionTitle" data-t="archTitle">{t.archTitle}</h2>
+    <p class="archSubtitle" data-t="archSubtitle">{t.archSubtitle}</p>
+
+    <div class="archStack" aria-label="Architecture diagram">
+      <p class="archLabel" data-t="archLayerClients">{t.archLayerClients}</p>
+      <div class="archRow archClients" style="--layer:0">
+        {clients.map((c) => (
+          <div class={`archNode ${c.primary ? 'primary' : ''}`}>
+            <b data-t={c.tr ? c.name : undefined}>{c.tr ? t[c.name] : c.name}</b>
+            {c.sub && <small data-t={c.subTr ? c.sub : undefined}>{c.subTr ? t[c.sub] : c.sub}</small>}
+            {c.badge && <em data-t={c.badge}>{t[c.badge]}</em>}
+          </div>
+        ))}
+      </div>
+
+      <div class="archLink"><i></i><i></i><i></i></div>
+
+      <p class="archLabel" data-t="archLayerApi">{t.archLayerApi}</p>
+      <div class="archRow" style="--layer:1">
+        <div class="archNode wide">
+          <b>vasya-server</b>
+          <small data-t="archApiDesc">{t.archApiDesc}</small>
+        </div>
+      </div>
+
+      <div class="archLink"><i></i><i></i><i></i></div>
+
+      <p class="archLabel" data-t="archLayerCore">{t.archLayerCore}</p>
+      <div class="archRow" style="--layer:2">
+        <div class="archNode wide core">
+          <b>vasya-core</b>
+          <small data-t="archCoreDesc">{t.archCoreDesc}</small>
+        </div>
+      </div>
+
+      <div class="archLink"><i></i><i></i><i></i></div>
+
+      <p class="archLabel" data-t="archLayerChannels">{t.archLayerChannels}</p>
+      <div class="archRow archChannels" style="--layer:3">
+        {channels.map((c) => (
+          <div class={`archNode ${c.live ? 'live' : 'planned'}`}>
+            <b data-t={c.tr ? c.name : undefined}>{c.tr ? t[c.name] : c.name}</b>
+            <em data-t={c.badge}>{t[c.badge]}</em>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

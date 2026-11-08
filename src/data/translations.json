@@ -77,7 +77,23 @@
         "featureSelfHostTitle": "Self-Hosted, Your Way",
         "featureSelfHostDesc": "Run the engine right inside the app with no backend, expose a local API for your own agents, or deploy the server on your own machine. Your data, your infrastructure.",
         "featureModesTitle": "Two Ways to Run",
-        "featureModesDesc": "Use it out of the box — the engine runs right inside the app, no server, no setup. Or run it self-hosted on your own machine. One app, two modes, your call."
+        "featureModesDesc": "Use it out of the box — the engine runs right inside the app, no server, no setup. Or run it self-hosted on your own machine. One app, two modes, your call.",
+        "archTitle": "One engine, every screen",
+        "archSubtitle": "A single Rust core and one server API sit under every client. Web, desktop, native and AI agents all speak the same contract.",
+        "archLayerClients": "Clients",
+        "archLayerApi": "Server API",
+        "archLayerCore": "Core engine",
+        "archLayerChannels": "Channels",
+        "archApiDesc": "REST · GraphQL · live events",
+        "archCoreDesc": "Sessions · media · speech-to-text · translation",
+        "archPrimary": "Primary",
+        "archLive": "Live",
+        "archPlanned": "Planned",
+        "archAgents": "AI agents",
+        "archAgentsDesc": "Scoped keys · MCP",
+        "archDesktop": "Desktop",
+        "archNative": "Native",
+        "archEmail": "Email"
     },
     "ru": {
         "navFeatures": "Возможности",
@@ -157,6 +173,22 @@
         "featureSelfHostTitle": "Self-host как удобно",
         "featureSelfHostDesc": "Движок работает прямо в приложении без бэкенда, можно поднять локальный API для своих агентов или развернуть сервер на своём железе. Твои данные — твоя инфраструктура.",
         "featureModesTitle": "Работает в двух режимах",
-        "featureModesDesc": "Из коробки — движок работает прямо в приложении, без сервера и настройки. Или подними его в self-hosted-режиме на своём железе. Одно приложение, два режима — выбираешь ты."
+        "featureModesDesc": "Из коробки — движок работает прямо в приложении, без сервера и настройки. Или подними его в self-hosted-режиме на своём железе. Одно приложение, два режима — выбираешь ты.",
+        "archTitle": "Один движок, любой экран",
+        "archSubtitle": "Под всеми клиентами лежит одно ядро на Rust и один серверный API. Веб, десктоп, нативные приложения и AI-агенты работают по одному контракту.",
+        "archLayerClients": "Клиенты",
+        "archLayerApi": "Серверный API",
+        "archLayerCore": "Ядро",
+        "archLayerChannels": "Каналы",
+        "archApiDesc": "REST · GraphQL · живые события",
+        "archCoreDesc": "Сессии · медиа · речь в текст · перевод",
+        "archPrimary": "Основной",
+        "archLive": "Работает",
+        "archPlanned": "В планах",
+        "archAgents": "AI-агенты",
+        "archAgentsDesc": "Ключи с правами · MCP",
+        "archDesktop": "Десктоп",
+        "archNative": "Нативные",
+        "archEmail": "Почта"
     }
 }

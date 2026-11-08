@@ -27,13 +27,15 @@ export function initMotion(): void {
     (entries) => entries.forEach((e) => e.target.classList.toggle('live', e.isIntersecting)),
     { threshold: 0.2 },
   );
-  document.querySelectorAll('.scene').forEach((el) => sceneIo.observe(el));
+  document.querySelectorAll('.scene, .archStack').forEach((el) => sceneIo.observe(el));
 
   // Section titles and cards: reveal in reading order, then hand hover
   // transitions back to the original card styles.
   const groups: Array<[string, number]> = [
     ['.sectionTitle', 1],
     ['.featuresGrid', 3],
+    ['.arch .sectionTitle, .archSubtitle', 1],
+    ['.archStack', 1],
     ['.downloadTitle, .downloadSubtitle', 1],
     ['.downloadGrid', 3],
     ['.allReleasesLink', 1],

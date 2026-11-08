@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import translations from '../data/translations.json';
 import Scene from '../components/Scene.astro';
+import Architecture from '../components/Architecture.astro';
+import '../styles/architecture.css';
 import '../styles/scenes.css';
 import '../styles/page.css';
 import '../styles/motion.css';
@@ -256,6 +258,8 @@ const features = [
           </div>
         </div>
       </section>
+
+      <Architecture />
 
       <section id="download" class="downloadSection">
         <div class="container">

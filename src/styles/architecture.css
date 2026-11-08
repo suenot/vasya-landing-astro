@@ -1,0 +1,125 @@
+/*
+ * Architecture diagram. Reads top to bottom: clients -> API -> core -> channels.
+ * Motion tells the story: a request pulse travels down the stack (each layer
+ * lights up in turn) while data dots run along the links. Only opacity,
+ * transform and box-shadow-free properties animate. Static without motion.
+ */
+.arch { padding: 100px 0; }
+.archSubtitle {
+  max-width: 640px;
+  margin: 0 auto 3rem;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+.archStack {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.archLabel {
+  margin: 0 0 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.archRow { display: grid; gap: 14px; }
+.archClients { grid-template-columns: repeat(4, 1fr); }
+.archChannels { grid-template-columns: repeat(3, 1fr); }
+.archNode {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 12px;
+  border-radius: 16px;
+  background: var(--bg-secondary);
+  border: 1px solid #263649;
+  text-align: center;
+}
+.archNode.wide { padding: 20px; }
+.archNode b { font-size: 1.05rem; color: var(--text-primary); }
+.archNode small { font-size: 0.8rem; color: var(--text-tertiary); }
+.archNode em {
+  font-style: normal;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(51, 144, 236, 0.18);
+  color: var(--accent-hover);
+}
+.archNode.primary { border-color: var(--accent-color); }
+.archNode.core { border-color: #3d6a9c; background: linear-gradient(180deg, #1b2b3d, var(--bg-secondary)); }
+.archNode.planned { border-style: dashed; opacity: 0.65; }
+.archNode.planned em { background: #263649; color: var(--text-tertiary); }
+.archNode.live em { background: rgba(79, 174, 78, 0.2); color: #6fd06e; }
+
+/* Links between layers */
+.archLink {
+  position: relative;
+  height: 52px;
+  margin: 6px 0 10px;
+}
+.archLink::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: repeating-linear-gradient(#3b5573 0 4px, transparent 4px 9px);
+}
+.archLink i {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: var(--accent-hover);
+  opacity: 0;
+}
+
+@media (max-width: 640px) {
+  .arch { padding: 70px 0; }
+  .archClients { grid-template-columns: repeat(2, 1fr); }
+  .archChannels { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .archStack:not(.live) .archNode,
+  .archStack:not(.live) .archLink i { animation-play-state: paused; }
+
+  /* Each layer lights up in turn: the request goes down, then settles. */
+  .archNode { animation: archPulse 6s ease-in-out infinite; animation-delay: calc(var(--layer, 0) * 0.55s); }
+  @keyframes archPulse {
+    0%, 14%, 100% { border-color: #263649; translate: 0 0; }
+    6% { border-color: var(--accent-color); translate: 0 -3px; }
+  }
+  .archNode.primary { animation-name: archPulsePrimary; }
+  @keyframes archPulsePrimary {
+    0%, 14%, 100% { border-color: var(--accent-color); translate: 0 0; }
+    6% { border-color: var(--accent-hover); translate: 0 -3px; }
+  }
+  .archNode.planned { animation: none; }
+
+  .archLink i { animation: archDot 2.2s linear infinite; }
+  .archLink i:nth-child(2) { animation-delay: 0.7s; }
+  .archLink i:nth-child(3) { animation-delay: 1.4s; }
+  @keyframes archDot {
+    0% { translate: 0 0; opacity: 0; }
+    15%, 80% { opacity: 1; }
+    100% { translate: 0 46px; opacity: 0; }
+  }
+}
