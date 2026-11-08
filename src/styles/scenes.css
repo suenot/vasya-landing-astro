@@ -1,0 +1,221 @@
+/*
+ * Scenes: looping motion-design illustrations (replace generated images).
+ * Base rules draw a meaningful still frame. Animations only run when the
+ * user allows motion, and only while the scene is on screen (.live is set by
+ * scripts/motion.ts), so offscreen scenes cost nothing.
+ * Only transform and opacity animate.
+ */
+.scene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(51, 144, 236, 0.14), transparent 60%),
+    var(--bg-secondary);
+}
+.scene svg { width: 100%; height: 100%; display: block; }
+.scene * { transform-box: fill-box; transform-origin: center; }
+
+.scene .fillAccent { fill: var(--accent-color); }
+.scene .fillAccentSoft { fill: rgba(51, 144, 236, 0.55); }
+.scene .fillWhite { fill: #fff; }
+.scene .fillMute { fill: #33445a; }
+.scene .lineBase { fill: #9bb3cf; opacity: 0.8; }
+.scene .lineBase.soft { opacity: 0.35; }
+.scene .device, .scene .panel { fill: var(--bg-tertiary); stroke: #2f4259; stroke-width: 1.5; }
+.scene .screen { fill: var(--bg-primary); }
+.scene .track { fill: #223142; }
+.scene .tiny { fill: var(--text-tertiary); font: 600 11px var(--font-family); letter-spacing: 0.04em; }
+.scene .wire { stroke: #3b5573; stroke-width: 2; stroke-dasharray: 4 5; fill: none; }
+.scene .stroke { stroke: #fff; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.scene .packet { fill: var(--accent-hover); }
+.scene .led { fill: #4fae4e; }
+.scene .dotA { fill: #ff6058; } .scene .dotB { fill: #ffbd2e; } .scene .dotC { fill: #28c941; }
+
+/* voice */
+.sc-voice .bar { fill: var(--accent-color); }
+.sc-voice .line { fill: #cfe0f5; opacity: 0.85; }
+/* focus */
+.sc-focus .rowBg { fill: var(--bg-tertiary); }
+.sc-focus .ping { fill: var(--accent-hover); opacity: 0; }
+.sc-focus .ring { fill: none; stroke: var(--accent-color); stroke-width: 2; opacity: 0.6; }
+.sc-focus .row.quiet { opacity: 0.4; }
+/* multi */
+.sc-multi .avatar { fill: #2b5278; }
+.sc-multi .avatarText { fill: #fff; font: 700 15px var(--font-family); }
+.sc-multi .ringSel { fill: none; stroke: var(--accent-color); stroke-width: 2.5; opacity: 0; }
+.sc-multi .ringSel.r0 { opacity: 1; }
+.sc-multi .chat { opacity: 0; }
+.sc-multi .chat.c0 { opacity: 1; }
+/* privacy */
+.sc-privacy .cloud { fill: #2a3b50; }
+.sc-privacy .slash { stroke: #e15b5b; stroke-width: 3; stroke-linecap: round; }
+.sc-privacy .barrier { stroke: var(--accent-color); stroke-width: 3; stroke-dasharray: 3 7; stroke-linecap: round; }
+.sc-privacy .lockArc { fill: none; stroke: var(--accent-color); stroke-width: 3; }
+.sc-privacy .packet { opacity: 0; }
+/* native */
+.sc-native .fill { fill: #3a4b5d; transform-origin: left center; }
+.sc-native .fill.fast { fill: var(--accent-color); scale: 0.22 1; }
+.sc-native .fill.fast.b2 { scale: 0.12 1; }
+.sc-native .fill.slow { scale: 0.86 1; }
+.sc-native .fill.slow.b2 { scale: 0.7 1; }
+/* summaries */
+.sc-summaries .stream { fill: #9bb3cf; opacity: 0.3; }
+.sc-summaries .digestBg { fill: var(--bg-tertiary); stroke: var(--accent-color); stroke-width: 1.5; }
+/* modes */
+.sc-modes .pick { fill: none; stroke: var(--accent-color); stroke-width: 2.5; }
+/* downloads */
+.sc-android .fill.fast, .sc-android .fill { transform-origin: left center; fill: var(--accent-color); scale: 0.7 1; }
+.sc-windows .panes rect { fill: var(--accent-color); opacity: 0.85; }
+.sc-ios .soonRing { fill: none; stroke: var(--accent-color); stroke-width: 2; opacity: 0.6; }
+.sc-web .globeRing { fill: none; stroke: var(--accent-color); stroke-width: 2; opacity: 0.8; }
+
+/* terminals (agent API, linux) */
+.term {
+  width: 84%;
+  border-radius: 12px;
+  background: var(--bg-primary);
+  border: 1px solid #2f4259;
+  overflow: hidden;
+  font: 500 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-align: left;
+}
+.termBar { display: flex; align-items: center; gap: 6px; padding: 8px 10px; background: var(--bg-tertiary); }
+.termBar i { width: 8px; height: 8px; border-radius: 50%; background: #3a4b5d; }
+.termBar b { margin-left: 6px; font-weight: 500; color: var(--text-tertiary); font-size: 11px; }
+.termBody { padding: 10px 12px 12px; color: #b0c4de; }
+.termBody p { margin: 0; white-space: nowrap; overflow: hidden; }
+.termBody p:nth-child(even) { color: var(--accent-hover); }
+.caret { display: inline-block; width: 7px; height: 13px; margin-left: 3px; vertical-align: -2px; background: var(--accent-hover); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .scene *, .scene { animation-play-state: paused; }
+  .scene.live * { animation-play-state: running; }
+
+  /* voice: bars pulse (listening), then the transcript writes in */
+  .sc-voice .bar { animation: sc-pulse 6s ease-in-out infinite; animation-delay: var(--d); }
+  @keyframes sc-pulse {
+    0%, 4% { scale: 1 0.3; opacity: 0.4; }
+    10%, 22% { scale: 1 1; opacity: 1; }
+    30% { scale: 1 0.55; opacity: 0.8; }
+    40%, 100% { scale: 1 0.3; opacity: 0.35; }
+  }
+  .sc-voice .line { transform-origin: left center; animation: sc-write 6s var(--ease-out, ease-out) infinite; }
+  .sc-voice .l2 { animation-delay: 0.25s; }
+  .sc-voice .l3 { animation-delay: 0.5s; }
+  @keyframes sc-write {
+    0%, 38% { scale: 0 1; opacity: 0; }
+    52%, 90% { scale: 1 1; opacity: 0.85; }
+    100% { scale: 1 1; opacity: 0; }
+  }
+
+  /* focus: notifications ping, everything but the favourite goes quiet */
+  .sc-focus .row.quiet { animation: sc-quiet 6s ease-in-out infinite; animation-delay: calc(var(--i) * 120ms); }
+  @keyframes sc-quiet {
+    0%, 10% { opacity: 1; translate: 0 0; }
+    38%, 88% { opacity: 0.25; translate: 14px 0; }
+    100% { opacity: 1; translate: 0 0; }
+  }
+  .sc-focus .ping { animation: sc-ping 6s ease-in-out infinite; animation-delay: calc(var(--i) * 120ms); }
+  @keyframes sc-ping {
+    0%, 4% { opacity: 0; scale: 0.2; }
+    10%, 24% { opacity: 1; scale: 1; }
+    34%, 100% { opacity: 0; scale: 0.2; }
+  }
+  .sc-focus .ring { animation: sc-ring 2.4s ease-out infinite; }
+  @keyframes sc-ring { from { scale: 0.6; opacity: 0.8; } to { scale: 2.4; opacity: 0; } }
+
+  /* multi: switch between three accounts, conversation follows */
+  .sc-multi .ringSel { animation: sc-sel 9s steps(1) infinite; }
+  .sc-multi .ringSel.r0 { animation-name: sc-sel0; }
+  .sc-multi .ringSel.r1 { animation-name: sc-sel1; }
+  .sc-multi .ringSel.r2 { animation-name: sc-sel2; }
+  @keyframes sc-sel0 { 0% { opacity: 1; } 33.3% { opacity: 0; } 100% { opacity: 0; } }
+  @keyframes sc-sel1 { 0% { opacity: 0; } 33.3% { opacity: 1; } 66.6% { opacity: 0; } 100% { opacity: 0; } }
+  @keyframes sc-sel2 { 0% { opacity: 0; } 66.6% { opacity: 1; } 100% { opacity: 1; } }
+  .sc-multi .chat { animation: sc-chat 9s ease-in-out infinite; }
+  .sc-multi .chat.c0 { animation-name: sc-chat0; }
+  .sc-multi .chat.c1 { animation-name: sc-chat1; }
+  .sc-multi .chat.c2 { animation-name: sc-chat2; }
+  @keyframes sc-chat0 { 0%, 28% { opacity: 1; translate: 0 0; } 34%, 94% { opacity: 0; translate: 0 -8px; } 100% { opacity: 1; translate: 0 0; } }
+  @keyframes sc-chat1 { 0%, 31% { opacity: 0; translate: 0 8px; } 38%, 61% { opacity: 1; translate: 0 0; } 67%, 100% { opacity: 0; translate: 0 -8px; } }
+  @keyframes sc-chat2 { 0%, 64% { opacity: 0; translate: 0 8px; } 71%, 94% { opacity: 1; translate: 0 0; } 100% { opacity: 0; } }
+
+  /* privacy: data flows out, bounces off the barrier, never reaches the cloud */
+  .sc-privacy .packet { animation: sc-bounce 3.2s ease-in-out infinite; }
+  .sc-privacy .p2 { animation-delay: 0.5s; }
+  .sc-privacy .p3 { animation-delay: 1s; }
+  @keyframes sc-bounce {
+    0% { translate: 0 0; opacity: 0; }
+    10% { opacity: 1; }
+    45% { translate: 22px 0; opacity: 1; }
+    62% { translate: 2px 0; opacity: 0.6; }
+    80%, 100% { translate: -10px 0; opacity: 0; }
+  }
+  .sc-privacy .barrier { animation: sc-dash 1.2s linear infinite; }
+  @keyframes sc-dash { to { stroke-dashoffset: -20; } }
+
+  /* native: bars race, the lean one wins */
+  .sc-native .fill { animation: sc-grow 5s var(--ease-out, ease-out) infinite; }
+  .sc-native .fill.slow { animation-duration: 5s; animation-timing-function: ease-in-out; }
+  @keyframes sc-grow { 0% { scale: 0 1; } 12% { scale: 0 1; } 40%, 88% { scale: var(--to, 1) 1; } 100% { scale: 0 1; } }
+  .sc-native .fill.fast { --to: 0.22; }
+  .sc-native .fill.fast.b2 { --to: 0.12; }
+  .sc-native .fill.slow { --to: 0.86; animation-delay: 0.1s; }
+  .sc-native .fill.slow.b2 { --to: 0.7; }
+
+  /* summaries: a long stream collapses into a short digest */
+  .sc-summaries .stream { animation: sc-stream 6s ease-in-out infinite; animation-delay: calc(var(--i) * 140ms); }
+  @keyframes sc-stream {
+    0% { opacity: 0; translate: -16px 0; }
+    14%, 40% { opacity: 0.55; translate: 0 0; }
+    58%, 100% { opacity: 0.12; translate: 0 12px; scale: 1 0.6; }
+  }
+  .sc-summaries .digest { animation: sc-digest 6s var(--ease-out, ease-out) infinite; }
+  @keyframes sc-digest {
+    0%, 42% { opacity: 0; translate: 0 18px; }
+    58%, 92% { opacity: 1; translate: 0 0; }
+    100% { opacity: 0; translate: 0 0; }
+  }
+
+  /* agent / linux: lines type out with steps */
+  .term p { width: 0; animation: sc-type 7s steps(26, end) infinite; }
+  .term .t1 { animation-delay: 0s; }
+  .term .t2 { animation-delay: 1.5s; }
+  .term .t3 { animation-delay: 3s; }
+  .term .t4 { animation-delay: 4.4s; }
+  @keyframes sc-type {
+    0% { width: 0; }
+    14%, 94% { width: 100%; }
+    100% { width: 0; }
+  }
+  .term .caret { animation: sc-blink 1s steps(1) infinite; }
+  @keyframes sc-blink { 50% { opacity: 0; } }
+
+  /* selfhost: packets travel from the server to the app, LEDs blink */
+  .sc-selfhost .led { animation: sc-led 1.6s ease-in-out infinite; animation-delay: var(--d); }
+  @keyframes sc-led { 50% { opacity: 0.25; } }
+  .sc-selfhost .packet { animation: sc-fly 2.4s ease-in-out infinite; }
+  .sc-selfhost .k2 { animation-delay: 1.2s; }
+  @keyframes sc-fly { 0% { translate: 0 0; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { translate: 56px 0; opacity: 0; } }
+
+  /* modes: the highlight hops between the two ways to run */
+  .sc-modes .pick { animation: sc-hop 6s var(--ease-out, ease-in-out) infinite; }
+  @keyframes sc-hop { 0%, 40% { translate: 0 0; } 50%, 90% { translate: 132px 0; } 100% { translate: 0 0; } }
+
+  /* downloads */
+  .scene .arrow { animation: sc-bob 1.8s ease-in-out infinite; }
+  @keyframes sc-bob { 50% { translate: 0 5px; } }
+  .sc-windows .panes rect { animation: sc-pane 3s ease-in-out infinite; }
+  .sc-windows .panes rect:nth-child(2) { animation-delay: 0.25s; }
+  .sc-windows .panes rect:nth-child(3) { animation-delay: 0.5s; }
+  .sc-windows .panes rect:nth-child(4) { animation-delay: 0.75s; }
+  @keyframes sc-pane { 0%, 100% { opacity: 0.85; } 50% { opacity: 0.35; } }
+  .sc-android .fill { animation: sc-load 3.4s ease-in-out infinite; }
+  @keyframes sc-load { 0% { scale: 0 1; } 70%, 90% { scale: 1 1; } 100% { scale: 0 1; } }
+  .sc-ios .soonRing { animation: sc-ring 2.4s ease-out infinite; }
+  .sc-ios .soonDot { animation: sc-blink 2.4s ease-in-out infinite; }
+  .sc-web .globeRing.m1 { animation: sc-spin 4s ease-in-out infinite alternate; }
+  @keyframes sc-spin { from { scale: 1 1; } to { scale: 0.15 1; } }
+}

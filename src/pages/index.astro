@@ -1,29 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import translations from '../data/translations.json';
-import { Image } from 'astro:assets';
+import Scene from '../components/Scene.astro';
+import '../styles/scenes.css';
 import '../styles/page.css';
 import '../styles/motion.css';
 import { APP_VERSION_NUM, RELEASE_URL } from '../constants';
 import { getLatest, pickAsset } from '../lib/releases';
 
-// Import images
-import featureVoiceAi from '../assets/feature_voice_ai.png';
-import featureFocus from '../assets/feature_focus_v2.png';
-import featureMulti from '../assets/feature_multi_account.png';
-import featurePrivacy from '../assets/feature_privacy_first.png';
-import featureNative from '../assets/feature_native_speed.png';
-import featureSummaries from '../assets/feature_summaries.png';
-import featureAgent from '../assets/feature_agent.png';
-import featureSelfHost from '../assets/feature_selfhost.png';
-import featureModes from '../assets/feature_modes.png';
-
-import downloadMac from '../assets/download_mac.png';
-import downloadWindows from '../assets/download_windows.png';
-import downloadLinux from '../assets/download_linux.png';
-import downloadAndroid from '../assets/download_android.png';
-import downloadIos from '../assets/download_ios.png';
-import downloadWeb from '../assets/download_web.png';
 
 const t = translations.en;
 
@@ -38,7 +22,7 @@ const dl = (re: RegExp, fallback: string) => pickAsset(ASSETS, re) ?? fallback;
 const downloads = [
   {
     id: 'mac',
-    image: downloadMac,
+    scene: 'mac',
     labelKey: 'downloadForMac',
     variants: [
       { labelKey: 'macSilicon', ext: ' (.dmg)', href: dl(/aarch64\.dmg$/, `${RELEASE}/Vasyapp_${VERSION_NUM}_aarch64.dmg`) },
@@ -47,7 +31,7 @@ const downloads = [
   },
   {
     id: 'windows',
-    image: downloadWindows,
+    scene: 'windows',
     labelKey: 'downloadForWindows',
     variants: [
       { labelKey: 'windowsExe', ext: ' (.exe)', href: dl(/x64-setup\.exe$/, `${RELEASE}/Vasyapp_${VERSION_NUM}_x64-setup.exe`) },
@@ -55,7 +39,7 @@ const downloads = [
   },
   {
     id: 'linux',
-    image: downloadLinux,
+    scene: 'linux',
     labelKey: 'downloadForLinux',
     variants: [
       { labelKey: 'linuxDeb', ext: ' (Ubuntu/Debian)', href: dl(/amd64\.deb$/, `${RELEASE}/Vasyapp_${VERSION_NUM}_amd64.deb`) },
@@ -64,7 +48,7 @@ const downloads = [
   },
   {
     id: 'android',
-    image: downloadAndroid,
+    scene: 'android',
     labelKey: 'downloadForAndroid',
     variants: [
       { labelKey: 'androidApk', ext: '', href: dl(/android-universal\.apk$/, `${RELEASE}/vasyapp-${VERSION_NUM}-android-universal.apk`) },
@@ -72,28 +56,28 @@ const downloads = [
   },
   {
     id: 'ios',
-    image: downloadIos,
+    scene: 'ios',
     labelKey: 'downloadForIos',
     comingSoon: true,
   },
   {
     id: 'web',
-    image: downloadWeb,
+    scene: 'web',
     labelKey: 'downloadForWeb',
     comingSoon: true,
   }
 ];
 
 const features = [
-  { image: featureVoiceAi, titleKey: 'featureVoiceTitle', descKey: 'featureVoiceDesc' },
-  { image: featureFocus, titleKey: 'featureFocusTitle', descKey: 'featureFocusDesc' },
-  { image: featureMulti, titleKey: 'featureMultiTitle', descKey: 'featureMultiDesc' },
-  { image: featurePrivacy, titleKey: 'featurePrivacyTitle', descKey: 'featurePrivacyDesc' },
-  { image: featureNative, titleKey: 'featureNativeTitle', descKey: 'featureNativeDesc' },
-  { image: featureAgent, titleKey: 'featureAgentTitle', descKey: 'featureAgentDesc' },
-  { image: featureSelfHost, titleKey: 'featureSelfHostTitle', descKey: 'featureSelfHostDesc' },
-  { image: featureModes, titleKey: 'featureModesTitle', descKey: 'featureModesDesc' },
-  { image: featureSummaries, titleKey: 'featureSummariesTitle', descKey: 'featureSummariesDesc', comingSoon: true },
+  { scene: 'voice', titleKey: 'featureVoiceTitle', descKey: 'featureVoiceDesc' },
+  { scene: 'focus', titleKey: 'featureFocusTitle', descKey: 'featureFocusDesc' },
+  { scene: 'multi', titleKey: 'featureMultiTitle', descKey: 'featureMultiDesc' },
+  { scene: 'privacy', titleKey: 'featurePrivacyTitle', descKey: 'featurePrivacyDesc' },
+  { scene: 'native', titleKey: 'featureNativeTitle', descKey: 'featureNativeDesc' },
+  { scene: 'agent', titleKey: 'featureAgentTitle', descKey: 'featureAgentDesc' },
+  { scene: 'selfhost', titleKey: 'featureSelfHostTitle', descKey: 'featureSelfHostDesc' },
+  { scene: 'modes', titleKey: 'featureModesTitle', descKey: 'featureModesDesc' },
+  { scene: 'summaries', titleKey: 'featureSummariesTitle', descKey: 'featureSummariesDesc', comingSoon: true },
 ];
 ---
 
@@ -263,7 +247,7 @@ const features = [
               <div class={`featureCard ${f.comingSoon ? 'featureFuture' : ''}`}>
                 {f.comingSoon && <div class="badge" data-t="comingSoon">{t.comingSoon}</div>}
                 <div class="featureImage">
-                  <Image src={f.image} alt={t[f.titleKey as keyof typeof t]} width={300} />
+                  <Scene name={f.scene} />
                 </div>
                 <h3 data-t={f.titleKey}>{t[f.titleKey as keyof typeof t]}</h3>
                 <p data-t={f.descKey}>{t[f.descKey as keyof typeof t]}</p>
@@ -291,7 +275,7 @@ const features = [
                   <div class="comingSoonBadge" data-t="comingSoon">{t.comingSoon}</div>
                 )}
                 <div class="downloadCardImage">
-                  <Image src={dl.image} alt={t[dl.labelKey as keyof typeof t]} width={300} />
+                  <Scene name={dl.scene} />
                 </div>
                 <h3 class="downloadCardTitle" data-t={dl.labelKey}>{t[dl.labelKey as keyof typeof t]}</h3>
                 {!dl.comingSoon && dl.variants && (

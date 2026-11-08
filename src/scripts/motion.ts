@@ -22,6 +22,13 @@ export function initMotion(): void {
     io.observe(mockup);
   }
 
+  // Scenes loop only while visible.
+  const sceneIo = new IntersectionObserver(
+    (entries) => entries.forEach((e) => e.target.classList.toggle('live', e.isIntersecting)),
+    { threshold: 0.2 },
+  );
+  document.querySelectorAll('.scene').forEach((el) => sceneIo.observe(el));
+
   // Section titles and cards: reveal in reading order, then hand hover
   // transitions back to the original card styles.
   const groups: Array<[string, number]> = [
