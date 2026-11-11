@@ -7,6 +7,7 @@ import '../styles/architecture.css';
 import '../styles/scenes.css';
 import '../styles/page.css';
 import '../styles/motion.css';
+import '../styles/demo.css';
 import { APP_VERSION_NUM, RELEASE_URL } from '../constants';
 import { getLatest, pickAsset } from '../lib/releases';
 
@@ -237,6 +238,7 @@ const features = [
 
               <div class="contentBg"></div>
             </div>
+            <p class="demoHint" aria-live="polite"></p>
           </div>
         </div>
       </section>
@@ -313,5 +315,7 @@ const features = [
 
 <script>
   import { initMotion } from '../scripts/motion';
+  import { initDemo } from '../scripts/demo';
   initMotion();
+  initDemo();
 </script>
